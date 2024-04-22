@@ -1,11 +1,28 @@
 {
-    "random": [],
+    "random": [
+        {
+            "user": "DataBot",
+            "time": "2024-04-22 19:37:28",
+            "text": "DataBot has joined the channel"
+        }
+    ],
     "se-project-3": [
         {
             "user": "aryan",
             "time": "2024-04-22 17:59:05",
             "text": "HALLLOOOOO"
+        },
+        {
+            "user": "DataBot",
+            "time": "2024-04-22 19:37:18",
+            "text": "DataBot has joined the channel"
         }
     ],
-    "general": []
+    "general": [
+        {
+            "user": "DataBot",
+            "time": "2024-04-22 19:36:44",
+            "text": "DataBot has joined the channel"
+        }
+    ]
 }
