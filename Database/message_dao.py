@@ -19,6 +19,17 @@ class MessageDAO:
             print("Message added successfully.")
         except pymysql.Error as error:
             print("Failed to add message:", error)
+            
+    def get_latest_entry(self, app):
+        sql = "SELECT * FROM messages WHERE App = %s ORDER BY Date DESC LIMIT 1"
+        values = (app)
+        try:
+            self.cursor.execute(sql, values)
+            result = self.cursor.fetchone()
+            return result
+        except pymysql.Error as error:
+            print("Failed to get latest entry:", error)
+            return None 
 
     def close_connection(self):
         self.connection.close()
@@ -28,4 +39,5 @@ if __name__ == "__main__":
     password = input("Enter your MySQL password: ")
     dao = MessageDAO(username, password)
     dao.add_message("!I=s|`,NRc+KZRGv/$7g", "user1", "slackbot", "Hello from Slack!", "Slack", "2021-09-01 12:00:00")
+    dao.get_latest_entry('Slack')
     dao.close_connection()
