@@ -20,6 +20,27 @@ class MessageDAO:
         except pymysql.Error as error:
             print("Failed to add message:", error)
 
+    def get_based_on_date(self,startDate,endDate=None):
+        # if endDate is None, return all messages after startDate
+        try:
+            if endDate is None:
+                query = '''SELECT App, MessageID, UserID, Sender, MessageContent, Date
+                        FROM messages
+                        WHERE Date >= ?'''
+                self.cursor.execute(query, (startDate,))
+            else:
+                query = '''SELECT App, MessageID, UserID, Sender, MessageContent, Date
+                        FROM messages
+                        WHERE Date BETWEEN ? AND ?'''
+                self.cursor.execute(query, (startDate, endDate))
+        except pymysql.Error as error:
+            print("Failed to get messages:", error)
+            return None
+        
+        data = self.cursor.fetchall()
+        return data
+
+
     def close_connection(self):
         self.connection.close()
 
