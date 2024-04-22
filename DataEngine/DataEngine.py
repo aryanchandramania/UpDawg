@@ -11,6 +11,7 @@ class DataEngine:
         self.tolerance = datetime.timedelta(minutes=1)
 
     def pushData(self):
+        
 
     def checkGap(self):
         cur_time = datetime.datetime.now()
