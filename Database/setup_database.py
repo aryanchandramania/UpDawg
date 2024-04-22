@@ -1,7 +1,7 @@
-import mysql.connector
+import pymysql
 
 def create_database(username, password):
-    connection = mysql.connector.connect(
+    connection = pymysql.connect(
         host="localhost",
         user=username,
         password=password
@@ -18,6 +18,7 @@ def create_database(username, password):
             Sender VARCHAR(255),
             MessageContent TEXT,
             App VARCHAR(50),
+            Date DATETIME,
             PRIMARY KEY (MessageID, App)
         )
     """)
