@@ -2,12 +2,28 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError 
 import json
 import datetime
+import time
 import configparser
 import asyncio
 
 import sys
 sys.path.append('..')
 from DataPull import DataPull
+
+"""
+history.json format:
+{
+    "channel_name": [
+        {
+            "user": "user_name",
+            "time": "time",
+            "text": "message"
+        },
+        ...
+    ],
+    ...
+}
+"""
 
 class SlackDataPull(DataPull):    
     def __init__(self):
@@ -22,8 +38,8 @@ class SlackDataPull(DataPull):
     def convert_ts_to_date(self, ts):
         return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
-    def too_old(self, ts, time_delta,):    
-        return datetime.datetime.now().timestamp() - float(ts) > time_delta * 60 * 60 * 24
+    def too_old(self, ts, start_time: datetime):    
+        return datetime.datetime.fromtimestamp(ts) < start_time
     
     def nzprint(self, text, value, ztext="results"):
         if value != 0:
@@ -65,7 +81,7 @@ class SlackDataPull(DataPull):
         except SlackApiError as e:
             print(e)
 
-    async def pullData(self, time_delta):
+    async def pullData(self, start_time: datetime):
         try:  
             # Get a list of all channels
             channels_list = self.client.conversations_list()
@@ -78,7 +94,7 @@ class SlackDataPull(DataPull):
         
             self.nzprint("There are " + str(len(self.id_to_channel)) + " channels in the workspace.", len(self.id_to_channel), "channels")
             for channel_id in self.id_to_channel.keys():
-                try:
+                # try:  
                     # Get the members of the conversation
                     print("Channel: ", self.id_to_channel[channel_id])
                     conv_members = self.client.conversations_members(
@@ -99,22 +115,25 @@ class SlackDataPull(DataPull):
                                     channel=channel_id)
                     newStuff = False
                     for message in response['messages'][::-1]:
-                        if not self.too_old(float(message['ts']), time_delta):
+                        if not self.too_old(float(message['ts']), start_time):
                             newStuff = True
                             break
                     self.nzprint("Messages in the conversation: ", 1 if newStuff else 0, "new messages")
                     for message in response['messages'][::-1]:
-                        if self.too_old(message['ts'], time_delta):
+                        if self.too_old(float(message['ts']), start_time):
                             continue
                         for user_id in self.id_to_user.keys():
                             message['text'] = message['text'].replace(f'<@{user_id}>', self.id_to_user[user_id])
                         print(f'{self.get_user(message["user"])} [{self.convert_ts_to_date(float(message['ts']))}]: {message["text"]}')
-                        self.history_json[self.id_to_channel[channel_id]].append({'user': self.get_user(message['user']), 'time': self.convert_ts_to_date(float(message['ts'])), 'text': message['text']})
+                        self.history_json[self.id_to_channel[channel_id]].append(
+                            {'user': self.get_user(message['user']), 
+                             'time': self.convert_ts_to_date(float(message['ts'])), 
+                             'text': message['text']})
                     print()
-                except:
-                    print("The bot has not been added to channel ", self.id_to_channel[channel_id])
-            # with open('history.json', 'w') as f:
-            #     json.dump(self.history_json, f)
+                # except:
+                #     print("The bot has not been added to channel ", self.id_to_channel[channel_id])
+            with open('history.json', 'w') as f:
+                json.dump(self.history_json, f)
             
         except SlackApiError as e:
             print(e)
@@ -122,4 +141,4 @@ class SlackDataPull(DataPull):
 if __name__ == "__main__":
     slack = SlackDataPull()
     slack.isProviderAlive()
-    asyncio.run(slack.pullData(1))
+    asyncio.run(slack.pullData(datetime.datetime(2024, 4, 20, 0, 0, 0)))

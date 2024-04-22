@@ -1,0 +1,46 @@
+Provider is alive
+List of all channels:
+CHANNEL ID	CHANNEL NAME
+C06SBC2R2CX 	 random 	
+C06SP21FA77 	 se-project-3 	
+C06T4JLSGC9 	 general 	
+
+
+There are 3 channels in the workspace.
+Channel:  random
+6 members in the conversation: 
+Sidhi Panda
+Shashwat Dash
+aryan
+Raghav
+Kapil Rajesh Kavitha
+DataBot
+
+Messages in the conversation: 
+DataBot [2024-04-22 19:37:28]: DataBot has joined the channel
+
+Channel:  se-project-3
+6 members in the conversation: 
+Sidhi Panda
+Shashwat Dash
+aryan
+Raghav
+Kapil Rajesh Kavitha
+DataBot
+
+Messages in the conversation: 
+aryan [2024-04-22 17:59:05]: HALLLOOOOO
+DataBot [2024-04-22 19:37:18]: DataBot has joined the channel
+
+Channel:  general
+6 members in the conversation: 
+Sidhi Panda
+Shashwat Dash
+aryan
+Raghav
+Kapil Rajesh Kavitha
+DataBot
+
+Messages in the conversation: 
+DataBot [2024-04-22 19:36:44]: DataBot has joined the channel
+
