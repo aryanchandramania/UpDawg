@@ -13,10 +13,14 @@ from msgraph.generated.models.recipient import Recipient
 from msgraph.generated.models.email_address import EmailAddress
 import configparser
 from datetime import datetime, timezone
+import sys
+
+sys.path.append('..')
+from DataPull import DataPull
 
 
 
-class OutlookDataPull(DataPull):
+class OutlookDataPull():
     settings: SectionProxy
     device_code_credential: DeviceCodeCredential
     user_client: GraphServiceClient
@@ -37,17 +41,16 @@ class OutlookDataPull(DataPull):
  
 
     # start_date needs to be a datetime object in UTC
+    # this function is supposed to fetch data from start_date to current date
+    # returns a list of dictionaries, each dictionary represents a message
     async def pullData(self, start_date):
-        # Get the current datetime in UTC
-        current_datetime_utc = datetime.now(timezone.utc)
-
-
 
         query_params = MessagesRequestBuilder.MessagesRequestBuilderGetQueryParameters(
             # Only request specific properties
-            select=['from', 'receivedDateTime', 'subject', 'body'],
+            select=['id', 'from', 'receivedDateTime', 'subject', 'body'],
             # Sort by received time, newest first
-            orderby=['receivedDateTime DESC']
+            orderby=['receivedDateTime DESC'],
+            filter = f"ReceivedDateTime ge {start_date.strftime('%Y-%m-%dT%H:%M:%SZ')}",
         )
         request_config = MessagesRequestBuilder.MessagesRequestBuilderGetRequestConfiguration(
             query_parameters= query_params
@@ -57,22 +60,27 @@ class OutlookDataPull(DataPull):
         messages = await self.user_client.me.mail_folders.by_mail_folder_id('inbox').messages.get(
                 request_configuration=request_config)
         
-        subject=None
-        sender=None
-        body=None
-        receivedDateTime=None
+        
+        dataDump = []
         if messages and messages.value:
             # Output each message's details
             for message in messages.value:
-                # subject
-                subject = message.subject
+                dataChunk = {}
+                if message.id:
+                    dataChunk['id'] = message.id
+                if message.subject:
+                    dataChunk['content'] = f'Subject: {message.subject}\n\n'
                 if (message.from_ and message.from_.email_address):
-                    sender = message.from_.email_address.name
-                receivedDateTime = message.received_date_time
-                body = message.body.content
-        
-        comb = f'Subject: {subject}\n\n {body}'
-        return messages
+                    dataChunk['sender'] = message.from_.email_address.name
+                if message.received_date_time:
+                    dataChunk['receivedDateTime'] = message.received_date_time
+                if message.body and message.body.content:
+                    dataChunk['content'] += message.body.content
+                dataDump.append(dataChunk)
+                print(dataChunk)
+                
+    
+        return dataDump
     
     
     
