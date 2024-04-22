@@ -2,7 +2,6 @@ from slack_sdk import WebClient
 from slack_sdk.errors import SlackApiError 
 import json
 import datetime
-import time
 import configparser
 import asyncio
 
@@ -67,7 +66,7 @@ class SlackDataPull(DataPull):
 	
     def send_message_to_user(self, text, user_id="U06T4JLQHQR", channel="random"):
         try:
-            response = self.client.chat_postEphemeral(
+            return self.client.chat_postEphemeral(
 							channel=channel, 
 							text=text, 
 							user=user_id)
@@ -77,7 +76,6 @@ class SlackDataPull(DataPull):
     def isProviderAlive(self):
         try:
             response = self.client.api_test()
-            print("Provider is alive")
         except SlackApiError as e:
             print(e)
 
@@ -94,7 +92,7 @@ class SlackDataPull(DataPull):
         
             self.nzprint("There are " + str(len(self.id_to_channel)) + " channels in the workspace.", len(self.id_to_channel), "channels")
             for channel_id in self.id_to_channel.keys():
-                # try:  
+                try:  
                     # Get the members of the conversation
                     print("Channel: ", self.id_to_channel[channel_id])
                     conv_members = self.client.conversations_members(
@@ -130,8 +128,8 @@ class SlackDataPull(DataPull):
                              'time': self.convert_ts_to_date(float(message['ts'])), 
                              'text': message['text']})
                     print()
-                # except:
-                #     print("The bot has not been added to channel ", self.id_to_channel[channel_id])
+                except:
+                    print("The bot has not been added to channel ", self.id_to_channel[channel_id])
             with open('history.json', 'w') as f:
                 json.dump(self.history_json, f)
             

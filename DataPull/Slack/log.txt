@@ -1,4 +1,3 @@
-Provider is alive
 List of all channels:
 CHANNEL ID	CHANNEL NAME
 C06SBC2R2CX 	 random 	
@@ -18,6 +17,8 @@ DataBot
 
 Messages in the conversation: 
 DataBot [2024-04-22 19:37:28]: DataBot has joined the channel
+Shashwat Dash [2024-04-22 21:31:39]: Shashwat Dash has joined the channel
+Shashwat Dash [2024-04-22 21:31:55]: :wave: Hello, team!
 
 Channel:  se-project-3
 6 members in the conversation: 
@@ -31,6 +32,7 @@ DataBot
 Messages in the conversation: 
 aryan [2024-04-22 17:59:05]: HALLLOOOOO
 DataBot [2024-04-22 19:37:18]: DataBot has joined the channel
+Shashwat Dash [2024-04-22 21:31:39]: Shashwat Dash has joined the channel
 
 Channel:  general
 6 members in the conversation: 
@@ -43,4 +45,7 @@ DataBot
 
 Messages in the conversation: 
 DataBot [2024-04-22 19:36:44]: DataBot has joined the channel
+Shashwat Dash [2024-04-22 21:31:39]: Shashwat Dash has joined the channel
+Shashwat Dash [2024-04-22 21:33:25]: great work aryan 
+i appreciate your hard work and wish you a successful life
 
