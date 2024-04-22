@@ -1,0 +1,31 @@
+List of all channels: 
+CHANNEL ID	CHANNEL NAME
+C06SBC2R2CX 	 random 	
+C06SP21FA77 	 se-project-3 	
+C06T4JLSGC9 	 general 	
+
+
+There are  3  channels in the workspace.
+Channel:  random
+6  members in the conversation: 
+Sidhi Panda
+Shashwat Dash
+Article Test App
+aryan
+Raghav
+Kapil Rajesh Kavitha
+
+Messages in the conversation: 
+
+Channel:  se-project-3
+6  members in the conversation: 
+
+Messages in the conversation: 
+aryan [2024-04-22 17:59:05]: HALLLOOOOO
+
+Channel:  general
+6  members in the conversation: 
+
+Messages in the conversation: 
+
+
