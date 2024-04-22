@@ -8,6 +8,7 @@ class DataPull:
     def __isProviderAlive(self):
         pass
 
+    # pulls data from the service
     async def pullData(self):
         pass
     
