@@ -35,7 +35,7 @@ class GPT3Summarizer:
         chunks = DataSplitter().split_data_into_chunks(data, 400)
         # print(len(chunks))
         messages=[
-                {"role": "system", "content": "Your task is to summarize the contents of all the mails and messages provided to you."},
+                {"role": "system", "content": prompt},
             ]
         for i,chunk in enumerate(chunks):
             # print(f"Chunk {i}:")
