@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright 
 
 class AdaLLM:
     def __init__(self):
@@ -11,21 +12,29 @@ class AdaLLM:
             'openai': None,
             'gemini': None
         }
-        self.APIKeys={'openai':None,
-                      'gemini':None}
+        self.APIKeys={'openai':'',
+                      'gemini':''}
         self.downDetectorUrl={'openai':'https://isdown.app/integrations/openai',
                               'gemini':'https://isdown.app/integrations/gemini'}
         
+
         # in days, total period over which number if issues and most recent incident is reported
         self.downPeriod = 30 
+        self.bestService = 'openai'
 
 
 
     def choose(self):
+        print(f'{self.bestService} chosen')
+        return self.services[self.bestService]
+        
+
+    # this may run periodically
+    def scoreLLM(self):
         filt = self.filterBasedOnKey()
         ser = self.filterBasedOnReliability(filt)
-        return self.services[ser]
-        
+        self.bestService = ser
+
 
     def filterBasedOnKey(self):
         filt=[]
@@ -48,39 +57,55 @@ class AdaLLM:
 
     # higher the score, worse the service is
     def getDownScore(self,url):
-        issues = -1
-        recency = -1
+        issues = 1000
+        recency = 1000
 
-        # Send a GET request to the URL
-        response = requests.get(url)
-        # Check if the request was successful (status code 200)
-        # getting the data from the webpage
-        if response.status_code == 200:
-            # Parse the HTML content of the webpage
-            soup = BeautifulSoup(response.text, 'html.parser')
-            
-            # Find the issues count element
-            issues_obj = soup.find('body').find_all('div')[1].find('section').find('div').find('div').find_all('div')[0].find('div').find_all('div')[1].find_all('div')[1].find('div').find('div').find('div').find_all('p')[1].find('span')
-            recency_obj = soup.find('body').find_all('div')[2].find('section').find('div').find('div').find_all('div')[0].find('div').find_all('div')[1].find_all('div')[1].find('div').find('div').find('div').find_all('p')[1].find('span')
-            
-            # check if the elements were found
-            if issues_obj:
-                issues = int(issues_obj.text)
-                print(issues_obj.text)
-            else:
-                print("Element not found.")
-                return -1
-            
-            if recency_obj:
-                recency = int(recency_obj.text)
-                print(recency_obj.text)
-            else:
-                print("Element not found.")
-                return -1
+        # Launch the Playwright browser instance
+        try:
+            with sync_playwright() as p:
+                browser = p.webkit.launch(headless=True)
 
-        else:
-            print("Failed to retrieve the webpage.")
-            return -1
+                page = browser.new_page()
+                page.goto(url)
+                # Get the page content after it fully loads
+                page.wait_for_load_state('networkidle')
+                html_content = page.content()
+
+                # # Close the browser
+                browser.close()
+
+                # Parse the HTML content of the webpage
+                soup = BeautifulSoup(html_content, 'html.parser')
+                # print(html_content)
+                
+                # Find the issues count element and recency count
+                issues_obj = soup.select_one('body > div:nth-of-type(2) > section > div > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div:nth-of-type(1) > p:nth-of-type(2) > span:nth-of-type(1)')
+                recency_obj = soup.select_one('body > div:nth-of-type(2) > section > div > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div:nth-of-type(2) > div:nth-of-type(2) > div > div > div:nth-of-type(2) > p:nth-of-type(2) > span:nth-of-type(1)')
+
+                if not issues_obj:
+                    issues_obj = soup.select_one('body > div:nth-of-type(2) > section > div > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(2) > div > div > div:nth-of-type(1) > p:nth-of-type(2) > span:nth-of-type(1)')
+                if not recency_obj:
+                    recency_obj = soup.select_one('body > div:nth-of-type(2) > section > div > div > div:nth-of-type(1) > div > div:nth-of-type(2) > div:nth-of-type(3) > div:nth-of-type(2) > div > div > div:nth-of-type(2) > p:nth-of-type(2) > span:nth-of-type(1)')
+                
+
+                # check if the elements were found
+                if issues_obj:
+                    issues = int(issues_obj.text)
+                    # print(issues_obj.text)
+                else:
+                    print("Element not found.")
+                    return 1000
+                
+                if recency_obj:
+                    recency = int(recency_obj.text)
+                    # print(recency_obj.text)
+                else:
+                    print("Element not found.")
+                    return 1000
+        except:
+            print("Failed to launch the browser.")
+            return 1000
         
-        return issues + (30-recency)
+        print(issues + (self.downPeriod-recency))
+        return issues + (self.downPeriod-recency)
 
