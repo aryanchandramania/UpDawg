@@ -1,5 +1,8 @@
 import pymysql
 
+
+# maybe make all fetchall returns a dictionary instead of a tuple
+# decreases coupling
 class MessageDAO:
     def __init__(self, username, password):
         self.connection = pymysql.connect(
@@ -19,8 +22,14 @@ class MessageDAO:
             print("Message added successfully.")
         except pymysql.Error as error:
             print("Failed to add message:", error)
-            
+
+    # messages is a list of dictionaries       
     def add_many_messages(self, messages):
+
+        msgs =[]
+        for msg in messages: # maybe convert msg into a message object for uniformity ?
+            msgs.append((msg['id'],msg['userId'],msg['sender'],msg['content'],msg['app'],msg['date']))
+
         sql = "INSERT INTO messages (MessageID, UserID, Sender, MessageContent, App, Date) VALUES (%s, %s, %s, %s, %s, %s)"
         try:
             self.cursor.executemany(sql, messages)

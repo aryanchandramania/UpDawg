@@ -1,6 +1,8 @@
 import sys
 sys.path.append('..')
 from Database import message_dao
+from DataPull.Outlook import OutlookDataPull
+from DataPull.Slack import SlackDataPull
 
 import datetime
 
@@ -8,11 +10,20 @@ class DataEngine:
     def __init__(self):
         self.msg_dao = message_dao.MessageDAO("root", "password")
         self.app_names = ['Slack', 'Outlook']
+        self.apps = {
+            'Slack': SlackDataPull(), # check if this instantiation is correct
+            'Outlook': OutlookDataPull()
+        }
         self.tolerance = datetime.timedelta(minutes=1)
 
-    def pushData(self):
+
+    # messages is a list of dictionaries
+    def pushData(self, messages):
+        self.msg_dao.add_many_messages(messages)
         
 
+    # check if datetimes are correct here
+    # should return a datetim object in the dictionary
     def checkGap(self):
         cur_time = datetime.datetime.now()
         latest_times = {}
@@ -54,3 +65,13 @@ class DataEngine:
             })
         
         return result
+    
+    # public facing function
+    def getData(self,startDate):
+        latest_entries = self.checkGap()
+        for app_name in self.app_names:
+            if latest_entries[app_name] is not None:
+                gapData = self.apps[app_name].pullData(latest_entries[app_name])
+                self.pushData(gapData)
+        return self.getDataFromDB(startDate)
+        
