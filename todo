@@ -1,0 +1,13 @@
+Check if message DTO is being used everywhere
+Check if all datetimes are UTC
+Check if datetimes are being passed around as datetimes and not strings, unless the specific function needs it in string
+Get current user id in OutlookDataPull from userman - kapil
+Modify SlackDataPull to integrate message DTO
+Make sim files, run files
+Remove sim code lines from all "Classes" - mainly UserManagement
+Group all these "class" files under "src"
+Group our monolith driver files under "app", includes frontend resources
+Group event driven arch driver files under "EDAapp", includes frontend resources
+create response parser
+comment code, what function does, especially what input arguments for functions are and what output is (type, and what they are)
+make functions private wherever needed
