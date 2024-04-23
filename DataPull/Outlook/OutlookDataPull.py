@@ -17,6 +17,7 @@ import sys
 
 sys.path.append('..')
 from DataPull import DataPull
+from Message.Message import Message
 
 
 
@@ -65,17 +66,19 @@ class OutlookDataPull():
         if messages and messages.value:
             # Output each message's details
             for message in messages.value:
-                dataChunk = {}
+                dataChunk = Message()
                 if message.id:
-                    dataChunk['id'] = message.id
+                    dataChunk.id = message.id
                 if message.subject:
-                    dataChunk['content'] = f'Subject: {message.subject}\n\n'
+                    dataChunk.message_content = f'Subject: {message.subject}\n\n'
                 if (message.from_ and message.from_.email_address):
-                    dataChunk['sender'] = message.from_.email_address.name
+                    dataChunk.sender = message.from_.email_address.name
                 if message.received_date_time:
-                    dataChunk['receivedDateTime'] = message.received_date_time
+                    dataChunk.date = message.received_date_time
                 if message.body and message.body.content:
-                    dataChunk['content'] += message.body.content
+                    dataChunk.message_content += message.body.content
+                
+                # get current logged in user ID
                 dataDump.append(dataChunk)
                 print(dataChunk)
                 

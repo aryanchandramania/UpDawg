@@ -1,3 +1,6 @@
+import sys
+sys.path.append('..')
+from Message.Message import Message
 import pymysql
 
 
@@ -13,9 +16,10 @@ class MessageDAO:
         )
         self.cursor = self.connection.cursor()
 
-    def add_message(self, MessageID, UserID, Sender, MessageContent, App, Date):
+    def add_message(self, message: Message):
         sql = "INSERT INTO messages (MessageID, UserID, Sender, MessageContent, App, Date) VALUES (%s, %s, %s, %s, %s, %s)"
-        values = (MessageID, UserID, Sender, MessageContent, App, Date)
+        # values = (MessageID, UserID, Sender, MessageContent, App, Date)
+        values = (message.id, message.user_id, message.sender, message.message_content, message.app, message.date)
         try:
             self.cursor.execute(sql, values)
             self.connection.commit()
@@ -23,12 +27,13 @@ class MessageDAO:
         except pymysql.Error as error:
             print("Failed to add message:", error)
 
-    # messages is a list of dictionaries       
+    # messages is a list of Messages      
     def add_many_messages(self, messages):
 
         msgs =[]
         for msg in messages: # maybe convert msg into a message object for uniformity ?
-            msgs.append((msg['id'],msg['userId'],msg['sender'],msg['content'],msg['app'],msg['date']))
+            # msgs.append((msg['id'],msg['userId'],msg['sender'],msg['content'],msg['app'],msg['date']))
+            msgs.append((msg.id, msg.user_id, msg.sender, msg.message_content, msg.app, msg.date))
 
         sql = "INSERT INTO messages (MessageID, UserID, Sender, MessageContent, App, Date) VALUES (%s, %s, %s, %s, %s, %s)"
         try:
@@ -44,7 +49,10 @@ class MessageDAO:
         try:
             self.cursor.execute(sql, values)
             result = self.cursor.fetchone()
-            return result
+
+            # indexes???
+            res = Message(result[1], result[2], result[3], result[4], result[5], result[6])
+            return res
         except pymysql.Error as error:
             print("Failed to get latest entry:", error)
             return None 
@@ -55,7 +63,11 @@ class MessageDAO:
         try:
             self.cursor.execute(sql, values)
             result = self.cursor.fetchall()
-            return result
+            res =[]
+            for row in result:
+                # indexes????
+                res.append(Message(row[1], row[2], row[3], row[4], row[5], row[6]))
+            return res
         except pymysql.Error as error:
             print("Failed to get all entries:", error)
             return None
@@ -78,7 +90,10 @@ class MessageDAO:
             return None
         
         data = self.cursor.fetchall()
-        return data
+        res = []
+        for row in data:
+            res.append(Message(row[1], row[2], row[3], row[4], row[5], row[6]))
+        return res
 
 
     def close_connection(self):

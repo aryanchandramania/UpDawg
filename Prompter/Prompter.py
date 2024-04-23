@@ -2,6 +2,7 @@ import sys
 sys.path.append('..')
 from DataEngine import DataEngine
 from AdaService.AdaLLM import AdaLLM
+from Message.Message import Message
 
 
 class Prompter:
@@ -13,6 +14,7 @@ class Prompter:
         self.serveLLM = AdaLLM()
         # instantiate llm switcher
         # initialize all variables needed for the prompter
+
 
     def prompt(self, dateTime):
         data = self.DE.getData(dateTime)
@@ -29,6 +31,13 @@ class Prompter:
     def prompt_contructor(self, data, nlCount=3):
         if nlCount<0:
             nlCount =0 
+
+        if isinstance(data, Message):
+            data = data.to_dict()
+            data.pop('id')
+            data.pop('user_id')
+            data.pop('app')
+        
         user_prompt=''
         for key,value in data.items():
             user_prompt += f'{key}:'
