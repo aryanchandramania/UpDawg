@@ -1,45 +1,54 @@
 import requests
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright 
+import sys
+sys.path.append('..')
+from UserManagement.UserManager import UserManager
+from LLMSummarizer.GeminiSummarizer import GeminiSummarizer
+from LLMSummarizer.GPT3Summarizer import GPT3Summarizer
 
 class AdaLLM:
     def __init__(self):
-        self.services = ['openai', 'gemini']
-        # instantiate openAI service
-        # instantiate gemini service
-        # pull from user config for API keys
-        self.services = {
-            'openai': None,
-            'gemini': None
-        }
-        self.APIKeys={'openai':'',
-                      'gemini':''}
+        self.service_names = ['openai', 'gemini']
+
+         # in days, total period over which number if issues and most recent incident is reported
+        self.downPeriod = 30 
+        self.bestService = 'openai' # maybe put a lock on this
+
+        self.UserMan = UserManager()
+
         self.downDetectorUrl={'openai':'https://isdown.app/integrations/openai',
                               'gemini':'https://isdown.app/integrations/gemini'}
         
 
-        # in days, total period over which number if issues and most recent incident is reported
-        self.downPeriod = 30 
-        self.bestService = 'openai'
+       
 
 
 
     def choose(self):
+        APIKey = self.UserMan.get_keys()[self.bestService]
         print(f'{self.bestService} chosen')
-        return self.services[self.bestService]
+        if self.bestService == 'openai':
+            return GPT3Summarizer(APIKey)
+        elif self.bestService == 'gemini':
+            return GeminiSummarizer(APIKey)
         
 
     # this may run periodically
     def scoreLLM(self):
         filt = self.filterBasedOnKey()
+        if len(filt) == 1:
+            self.bestService = filt[0]
+            return
         ser = self.filterBasedOnReliability(filt)
         self.bestService = ser
 
 
     def filterBasedOnKey(self):
+        APIKeys = self.UserMan.get_keys()
         filt=[]
-        for s in self.services:
-            if self.APIKeys[s] != None:
+        for s in self.service_names:
+            if APIKeys[s] != None:
                 filt.append(s)
         return filt
     

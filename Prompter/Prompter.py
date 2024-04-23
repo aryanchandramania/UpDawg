@@ -3,12 +3,13 @@ sys.path.append('..')
 from DataEngine import DataEngine
 from AdaService.AdaLLM import AdaLLM
 
+
 class Prompter:
-    def __init__(self, sys_prompt):
+    def __init__(self, summary_sys_prompt):
         # instantiate data engine
         self.DE = DataEngine()
         self.app_names = ['Slack', 'Outlook']
-        self.sys_prompt = sys_prompt
+        self.summary_sys_prompt = summary_sys_prompt
         self.serveLLM = AdaLLM()
         # instantiate llm switcher
         # initialize all variables needed for the prompter
@@ -19,6 +20,9 @@ class Prompter:
         print(user_prompt)
 
         # call the service on the system and user prompt
+        service = self.serveLLM.choose()
+        res = service.summarize(user_prompt, self.summary_sys_prompt)
+        return res
         
 
     

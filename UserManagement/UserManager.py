@@ -91,8 +91,8 @@ class UserManager:
     
     def get_keys(self):
         keys = {
-            "gemini": "",
-            "openai": ""
+            "gemini": None,
+            "openai": None
         }
         self.user_data, users = self.load_user_data()
         for user in users:
