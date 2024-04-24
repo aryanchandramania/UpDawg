@@ -1,8 +1,9 @@
 
 
 class Message:
-    def __init_(self, id, user_id, sender, message_content, app, date):
+    def __init_(self, id, user_id, conv_id, sender, message_content, app, date):
         self.user_id = user_id
+        self.conversation_id = conv_id
         self.sender = sender
         self.message_content = message_content
         self.date = date

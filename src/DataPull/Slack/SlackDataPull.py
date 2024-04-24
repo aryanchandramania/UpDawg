@@ -6,8 +6,9 @@ import configparser
 import asyncio
 
 import sys
-sys.path.append('..')
-from DataPull import DataPull
+sys.path.append('../..')
+from DataPull.DataPull import DataPull
+from Message.Message import Message
 
 """
 history.json format:
@@ -36,6 +37,9 @@ class SlackDataPull(DataPull):
 
     def convert_ts_to_date(self, ts):
         return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+    
+    def convert_date_to_ts(self, date):
+        return datetime.datetime.timestamp(date)
 
     def too_old(self, ts, start_time: datetime):    
         return datetime.datetime.fromtimestamp(ts) < start_time
@@ -81,6 +85,7 @@ class SlackDataPull(DataPull):
 
     async def pullData(self, start_time: datetime):
         try:  
+            messages = []
             # Get a list of all channels
             channels_list = self.client.conversations_list()
             self.nzprint("List of all channels:\nCHANNEL ID\tCHANNEL NAME", len(channels_list['channels']), "channels")
@@ -110,12 +115,16 @@ class SlackDataPull(DataPull):
 
                     # Get the conversation history
                     response = self.client.conversations_history(
-                                    channel=channel_id)
+                                    channel=channel_id, oldest=self.convert_date_to_ts(start_time))
+                    
+                    # Check if there are any new messages
                     newStuff = False
                     for message in response['messages'][::-1]:
                         if not self.too_old(float(message['ts']), start_time):
                             newStuff = True
                             break
+                        
+                    # Print all the messages    
                     self.nzprint("Messages in the conversation: ", 1 if newStuff else 0, "new messages")
                     for message in response['messages'][::-1]:
                         if self.too_old(float(message['ts']), start_time):
@@ -127,12 +136,25 @@ class SlackDataPull(DataPull):
                             {'user': self.get_user(message['user']), 
                              'time': self.convert_ts_to_date(float(message['ts'])), 
                              'text': message['text']})
+                        
+                        message_chunk = Message()
+                        message_chunk.id = message['ts']
+                        message_chunk.user_id = message['user']
+                        message_chunk.conversation_id = channel_id
+                        message_chunk.sender = self.get_user(message['user'])
+                        message_chunk.message_content = message['text']
+                        message_chunk.app = "Slack"
+                        message_chunk.date = self.convert_ts_to_date(float(message['ts']))
+                        messages.append(message_chunk)
+                        
                     print()
                 except:
                     print("The bot has not been added to channel ", self.id_to_channel[channel_id])
+                    
             with open('history.json', 'w') as f:
                 json.dump(self.history_json, f)
-            
+            return messages
+        
         except SlackApiError as e:
             print(e)
   
