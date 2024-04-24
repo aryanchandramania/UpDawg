@@ -107,6 +107,12 @@ class UserManager:
                 return keys
         return keys
     
+    def get_curr_user(self):
+        self.user_data, users = self.load_user_data()
+        for user in users:
+            if user["is_login"] == True:
+                return user
+        return None
 
 
     def login(self, username, password):
@@ -191,11 +197,14 @@ if __name__ == "__main__":
     # Logging in
     user_manager.login("JohnDoe", "password123")
     print(user_manager.get_keys())
+    print(user_manager.get_curr_user())
 
     # Logging out
     user_manager.logout()
     user_manager.login("JaneDoe", "janespassword")
     print(user_manager.get_keys())
+    print(user_manager.get_curr_user())
+
 
     user_manager.setBestService("gemini")
     print(user_manager.getBestService())
