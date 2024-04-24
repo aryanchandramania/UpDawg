@@ -13,7 +13,6 @@ class AdaLLM:
 
          # in days, total period over which number if issues and most recent incident is reported
         self.downPeriod = 30 
-        self.bestService = 'openai' # maybe put a lock on this
 
         self.UserMan = UserManager()
 
@@ -26,11 +25,12 @@ class AdaLLM:
 
 
     def choose(self):
-        APIKey = self.UserMan.get_keys()[self.bestService]
-        print(f'{self.bestService} chosen')
-        if self.bestService == 'openai':
+        bestService = self.UserMan.getBestService()
+        APIKey = self.UserMan.get_keys()[bestService]
+        print(f'{bestService} chosen')
+        if bestService == 'openai':
             return GPT3Summarizer(APIKey)
-        elif self.bestService == 'gemini':
+        elif bestService == 'gemini':
             return GeminiSummarizer(APIKey)
         
 
@@ -38,10 +38,10 @@ class AdaLLM:
     def scoreLLM(self):
         filt = self.filterBasedOnKey()
         if len(filt) == 1:
-            self.bestService = filt[0]
+            self.UserMan.setBestService(filt[0])
             return
         ser = self.filterBasedOnReliability(filt)
-        self.bestService = ser
+        self.UserMan.setBestService(ser)
 
 
     def filterBasedOnKey(self):

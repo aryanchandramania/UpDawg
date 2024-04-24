@@ -8,6 +8,9 @@ Remove sim code lines from all "Classes" - mainly UserManagement
 Group all these "class" files under "src"
 Group our monolith driver files under "app", includes frontend resources
 Group event driven arch driver files under "EDAapp", includes frontend resources
-create response parser
+create response parser, and its previous summary db
 comment code, what function does, especially what input arguments for functions are and what output is (type, and what they are)
 make functions private wherever needed
+error handling
+maybe keep a class containing message services names and their respective data pullers - increases modularity
+do the same for various LLM service providers - increases modularity

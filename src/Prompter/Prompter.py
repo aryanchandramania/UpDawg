@@ -52,4 +52,4 @@ class Prompter:
         
     def genNLn(self,count):
         return '\n'*count
-    
+

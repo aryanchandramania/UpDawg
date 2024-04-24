@@ -17,6 +17,7 @@ import sys
 
 sys.path.append('..')
 from DataPull import DataPull
+sys.path.append('../..')
 from Message.Message import Message
 
 
