@@ -1,8 +1,9 @@
 import sys
 sys.path.append('..')
 from Database import message_dao
-from DataPull.Outlook import OutlookDataPull
-from DataPull.Slack import SlackDataPull
+# from DataPull.Outlook import OutlookDataPull
+# from DataPull.Slack import SlackDataPull
+from DataClasses.MessageServices import MessageServices
 from Message.Message import Message
 
 import datetime
@@ -12,11 +13,14 @@ import datetime
 class DataEngine:
     def __init__(self):
         self.msg_dao = message_dao.MessageDAO("root", "password")
-        self.app_names = ['Slack', 'Outlook']
-        self.apps = {
-            'Slack': SlackDataPull(), # check if this instantiation is correct
-            'Outlook': OutlookDataPull()
-        }
+        msgSerData = MessageServices()
+        self.app_names = msgSerData.service_names
+        self.apps = msgSerData.getServices()
+        # self.app_names = ['Slack', 'Outlook']
+        # self.apps = {
+        #     'Slack': SlackDataPull(), # check if this instantiation is correct
+        #     'Outlook': OutlookDataPull()
+        # }
         self.tolerance = datetime.timedelta(minutes=1)
 
 

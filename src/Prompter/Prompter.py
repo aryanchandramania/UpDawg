@@ -3,13 +3,15 @@ sys.path.append('..')
 from DataEngine import DataEngine
 from AdaService.AdaLLM import AdaLLM
 from Message.Message import Message
+from DataClasses.MessageServices import MessageServices
 
 
 class Prompter:
     def __init__(self, summary_sys_prompt):
         # instantiate data engine
         self.DE = DataEngine()
-        self.app_names = ['Slack', 'Outlook']
+        msgSerData = MessageServices()
+        self.app_names = msgSerData.service_names
         self.summary_sys_prompt = summary_sys_prompt
         self.serveLLM = AdaLLM()
         # instantiate llm switcher
