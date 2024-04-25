@@ -3,10 +3,14 @@
 
 # from src.DataPull.Outlook import OutlookDataPull
 # from src.DataPull.Slack import SlackDataPull
-from src.DataClasses.MessageServices import MessageServices
-from src.DataEngine.DataEngine import DataEngine
+
 from time import sleep
 
+import sys
+sys.path.append('/home/shashwat/Desktop/IIITH/Year3_Sem2/SE/Project3/UpDawg/src/')
+
+from DataClasses.MessageServices import MessageServices
+from DataEngine.DataEngine import DataEngine
 
 period = 120 # in seconds
 de = DataEngine()

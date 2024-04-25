@@ -1,6 +1,7 @@
 # this has data related to the message services
 import sys
-sys.path.append('..')
+
+
 from DataPull.Slack.SlackDataPull import SlackDataPull
 from DataPull.Outlook.OutlookDataPull import OutlookDataPull
 

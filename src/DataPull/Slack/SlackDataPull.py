@@ -133,7 +133,7 @@ class SlackDataPull(DataPull):
                             continue
                         for user_id in self.id_to_user.keys():
                             message['text'] = message['text'].replace(f'<@{user_id}>', self.id_to_user[user_id])
-                        print(f'{self.get_user(message["user"])} [{self.convert_ts_to_date(float(message['ts']))}]: {message["text"]}')
+                        print(f'{self.get_user(message["user"])} [{self.convert_ts_to_date(float(message["ts"]))}]: {message["text"]}')
                         self.history_json[self.id_to_channel[channel_id]].append(
                             {'user': self.get_user(message['user']), 
                              'time': self.convert_ts_to_date(float(message['ts'])), 
