@@ -6,7 +6,8 @@ import json
 from src.DataEngine.DataEngine import DataEngine
 from src.DataClasses.MessageServices import MessageServices
 from src.Message.Message import Message
-from datetime import datetime
+from datetime import datetime, timezone
+import pytz
 
 def start_data_engine():
     # RabbitMQ setup
@@ -37,7 +38,7 @@ def start_data_engine():
         global startDate
         # parse startdate
         body = json.loads(body.decode('utf-8'))
-        startDate = datetime.strptime(body['startdate'], "%Y-%m-%d %H:%M:%S")
+        startDate = pytz.utc.localize(datetime.strptime(body['startdate'], "%Y-%m-%d %H:%M:%S"))
 
 
         latest_entries = de.checkGap()

@@ -10,3 +10,4 @@ make functions private wherever needed
 error handling
 keep a file in app, this file sets up all dbs
 keep an sh file in app which runs all python threads in the background
+keep outlook ad slack asynchtonous

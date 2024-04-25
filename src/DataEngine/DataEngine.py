@@ -5,8 +5,11 @@ from Database import message_dao
 # from DataPull.Slack import SlackDataPull
 from DataClasses.MessageServices import MessageServices
 from Message.Message import Message
+import asyncio
 
 import datetime
+from datetime import timezone 
+import pytz
 
 
 # check if all times are in UTC
@@ -32,7 +35,7 @@ class DataEngine:
     # check if datetimes are correct here
     # should return a datetim object in the dictionary
     def checkGap(self, initStartdate = None):
-        cur_time = datetime.datetime.now(datetime.timezone.utc)
+        cur_time = datetime.datetime.now(timezone.utc)
         latest_times = {}
         for app in self.app_names:
             latest_times[app] = None
@@ -41,7 +44,7 @@ class DataEngine:
                 print(f"No entry found for {app}")
                 latest_times[app] = initStartdate
                 continue
-            latest_times[app] = datetime.datetime.strptime(latest_entry.date, "%Y-%m-%d %H:%M:%S")
+            latest_times[app] = pytz.utc.localize(datetime.datetime.strptime(latest_entry.date, "%Y-%m-%d %H:%M:%S"))
             if cur_time - latest_times[app] < self.tolerance:
                 latest_times[app] = None
         return latest_times
@@ -69,11 +72,20 @@ class DataEngine:
     
     
     # public facing function
-    def getData(self,startDate):
+    async def getData_async(self,startDate):
         latest_entries = self.checkGap(startDate)
         for app_name in self.app_names:
             if latest_entries[app_name] is not None:
-                gapData = self.apps[app_name].pullData(latest_entries[app_name])
+                if app_name == 'Slack':
+                    gapData = self.apps[app_name].pullData(latest_entries[app_name])
+                    # print(gapData)
+                elif app_name == 'Outlook':
+                    gapData = await self.apps[app_name].pullData(latest_entries[app_name])
                 self.pushData(gapData)
         return self.getDataFromDB(startDate)
+    
+    def getData(self,startDate):
+        return asyncio.run(self.getData_async(startDate))
+    
+
         

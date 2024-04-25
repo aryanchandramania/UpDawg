@@ -20,6 +20,7 @@ from DataPull import DataPull
 sys.path.append('../..')
 from Message.Message import Message
 from UserManagement.UserManager import UserManager
+import pytz
 
 
 
@@ -55,7 +56,7 @@ class OutlookDataPull():
             select=['id', 'from', 'receivedDateTime', 'subject', 'body'],
             # Sort by received time, newest first
             orderby=['receivedDateTime DESC'],
-            filter = f"ReceivedDateTime ge {start_date.strftime('%Y-%m-%dT%H:%M:%SZ')}",
+            filter = f"ReceivedDateTime gt {start_date.strftime('%Y-%m-%dT%H:%M:%SZ')}",
         )
         request_config = MessagesRequestBuilder.MessagesRequestBuilderGetRequestConfiguration(
             query_parameters= query_params
@@ -78,13 +79,20 @@ class OutlookDataPull():
                 if (message.from_ and message.from_.email_address):
                     dataChunk.sender = message.from_.email_address.name
                 if message.received_date_time:
-                    dataChunk.date = message.received_date_time
+                    datetime_obj = message.received_date_time
+                    print(datetime_obj)
+                    print(datetime_obj.tzinfo)
+                    # datetime_obj = datetime.fromisoformat(message.received_date_time)
+                    dataChunk.date = datetime_obj.strftime("%Y-%m-%d %H:%M:%S")
                 if message.body and message.body.content:
                     dataChunk.message_content += message.body.content
                 
                 dataChunk.user_id = self.UserMan.get_curr_user()['email']
-                dataDump.append(dataChunk)
-                print(dataChunk)
+                dataChunk.app = 'Outlook'
+
+                if datetime_obj!=start_date:
+                    dataDump.append(dataChunk)
+                # print(dataChunk)
                 
     
         return dataDump

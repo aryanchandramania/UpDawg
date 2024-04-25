@@ -1,6 +1,6 @@
 import sys
 sys.path.append('..')
-from DataEngine import DataEngine
+from DataEngine.DataEngine import DataEngine
 from AdaService.AdaLLM import AdaLLM
 from Message.Message import Message
 from DataClasses.MessageServices import MessageServices

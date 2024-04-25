@@ -5,6 +5,7 @@ import pika
 from SlackDataPull import SlackDataPull
 from datetime import datetime, timezone
 import json
+import pytz
 
 
 def start_slack_publisher():
@@ -14,21 +15,21 @@ def start_slack_publisher():
     channel = connection.channel()
 
     def async_callback(ch, method, properties, body):
-        loop = asyncio.get_event_loop()
+        # loop = asyncio.get_event_loop()
         print(" [x] Received request for Outlook data")
         body = json.loads(body.decode('utf-8'))
 
         
-        startDate = datetime.strptime(body['startdate'], "%Y-%m-%d %H:%M:%S")
+        startDate = pytz.utc.localize(datetime.strptime(body['startdate'], "%Y-%m-%d %H:%M:%S"))
 
-        async def wrapper():
-            messages = await puller.pullData(startDate)
+        def wrapper():
+            messages = puller.pullData(startDate)
             # parsing
             json_messages = [msg.to_dict() for msg in messages]
             message = json.dumps(json_messages)
             channel.basic_publish(exchange='', routing_key='data_queue', body=message)
 
-        loop.run_until_complete(wrapper())
+        wrapper()
         print(" [x] Data published to data queue")
 
     channel.basic_consume(queue='Slack_request_queue', on_message_callback=async_callback, auto_ack=True)

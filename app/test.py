@@ -6,7 +6,7 @@
 # 3. This response is parsed by the response parser and sent back to the user
 
 # Also support login, logout, and user onboarding functions on various endpoints
-import datetime
+from datetime import datetime, timezone, timedelta
 from time import sleep
 
 import sys
@@ -21,8 +21,8 @@ def processRequest():
     # data = request.get_json()
     data = {'days': 1}
     days = data['days']
-    startDate = datetime.datetime.now() - datetime.timedelta(days=days)
-    prompter = Prompter()
+    startDate = datetime.now(timezone.utc) - timedelta(days=days)
+    prompter = Prompter("Summarize the following message data from various sources")
     response = prompter.prompt(startDate)
     # response_parser = ResponseParser()
     # response = response_parser.parse(response)
@@ -75,7 +75,8 @@ onboarding({'username': "raghav", 'email': "raghav.donakanti@students.iiit.ac.in
 
 login({'username': "raghav", 'password': "hello123"})
 
-sleep(420)
+sleep(10)
+print('start')
 
 processRequest()
 

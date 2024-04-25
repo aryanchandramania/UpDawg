@@ -14,6 +14,7 @@ from src.ResponseParser.ResponseParser import ResponseParser
 from src.UserManagement.UserManager import UserManager
 
 import datetime
+from datetime import timezone
 
 app = Flask(__name__)
 
@@ -21,7 +22,7 @@ app = Flask(__name__)
 def processRequest():
     data = request.get_json()
     days = data['days']
-    startDate = datetime.datetime.now() - datetime.timedelta(days=days)
+    startDate = datetime.datetime.now(timezone.utc) - datetime.timedelta(days=days)
     prompter = Prompter()
     response = prompter.prompt(startDate)
     response_parser = ResponseParser()

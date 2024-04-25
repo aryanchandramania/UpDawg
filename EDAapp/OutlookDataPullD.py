@@ -5,6 +5,7 @@ import pika
 from OutlookDataPull import OutlookDataPull
 from datetime import datetime, timezone
 import json
+import pytz
 
 
 def start_outlook_publisher():
@@ -18,7 +19,7 @@ def start_outlook_publisher():
         print(" [x] Received request for Outlook data")
         body = json.loads(body.decode('utf-8'))
 
-        startDate = datetime.strptime(body['startdate'], "%Y-%m-%d %H:%M:%S")
+        startDate = pytz.utc.localize(datetime.strptime(body['startdate'], "%Y-%m-%d %H:%M:%S"))
 
         async def wrapper():
             messages = await puller.pullData(startDate)

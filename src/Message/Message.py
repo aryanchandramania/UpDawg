@@ -1,7 +1,7 @@
 
 
 class Message:
-    def __init_(self, id =None, user_id = None, sender = None, message_content= None, app = None, date = None):
+    def __init__(self, id = None, user_id = None, sender = None, message_content= None, app = None, date = None):
         self.user_id = user_id
         self.sender = sender
         self.message_content = message_content

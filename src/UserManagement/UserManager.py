@@ -76,11 +76,13 @@ class UserManager:
             self.user_data = json.load(file)
 
         loaded_users = []
-        print(self.user_data)
+        # print(self.user_data)
         for user in self.user_data:
             # Decrypt API keys
-            gemini_api_key = self.decrypt(user["gemini_api_key"], user["gemini_api_key_key"])
-            openai_api_key = self.decrypt(user["openai_api_key"], user["openai_api_key_key"])
+            gemini_api_key = self.decrypt(user["gemini_api_key"].encode(), user["gemini_api_key_key"].encode())
+            openai_api_key = self.decrypt(user["openai_api_key"].encode(), user["openai_api_key_key"].encode())
+            print(openai_api_key)
+            print(gemini_api_key)
 
             loaded_users.append({
                 "username": user["username"],
