@@ -9,6 +9,7 @@ import sys
 sys.path.append('../..')
 from DataPull.DataPull import DataPull
 from Message.Message import Message
+from UserManagement.UserManager import UserManager
 
 """
 history.json format:
@@ -34,6 +35,7 @@ class SlackDataPull(DataPull):
         self.id_to_channel = {}
         self.id_to_user = {}
         self.history_json = {}
+        self.UserMan = UserManager()
 
     def convert_ts_to_date(self, ts):
         return datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
@@ -139,7 +141,8 @@ class SlackDataPull(DataPull):
                         
                         message_chunk = Message()
                         message_chunk.id = channel_id + -'-' + message['ts']
-                        message_chunk.user_id = message['user']
+                        # message_chunk.user_id = message['user']
+                        message_chunk.user_id = self.UserMan.get_curr_user()['email']
                         message_chunk.sender = self.get_user(message['user'])
                         message_chunk.message_content = message['text']
                         message_chunk.app = "Slack"

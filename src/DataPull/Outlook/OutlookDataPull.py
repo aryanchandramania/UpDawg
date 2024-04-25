@@ -19,6 +19,7 @@ sys.path.append('..')
 from DataPull import DataPull
 sys.path.append('../..')
 from Message.Message import Message
+from UserManagement.UserManager import UserManager
 
 
 
@@ -40,6 +41,8 @@ class OutlookDataPull():
 
         self.device_code_credential = DeviceCodeCredential(client_id, tenant_id = tenant_id)
         self.user_client = GraphServiceClient(self.device_code_credential, graph_scopes)
+
+        self.UserMan = UserManager()
  
 
     # start_date needs to be a datetime object in UTC
@@ -79,7 +82,7 @@ class OutlookDataPull():
                 if message.body and message.body.content:
                     dataChunk.message_content += message.body.content
                 
-                # get current logged in user ID
+                dataChunk.user_id = self.UserMan.get_curr_user()['email']
                 dataDump.append(dataChunk)
                 print(dataChunk)
                 
