@@ -138,9 +138,8 @@ class SlackDataPull(DataPull):
                              'text': message['text']})
                         
                         message_chunk = Message()
-                        message_chunk.id = message['ts']
+                        message_chunk.id = channel_id + -'-' + message['ts']
                         message_chunk.user_id = message['user']
-                        message_chunk.conversation_id = channel_id
                         message_chunk.sender = self.get_user(message['user'])
                         message_chunk.message_content = message['text']
                         message_chunk.app = "Slack"
