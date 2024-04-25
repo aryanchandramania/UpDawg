@@ -8,3 +8,5 @@ create response parser, and its previous summary db
 comment code, what function does, especially what input arguments for functions are and what output is (type, and what they are)
 make functions private wherever needed
 error handling
+keep a file in app, this file sets up all dbs
+keep an sh file in app which runs all python threads in the background

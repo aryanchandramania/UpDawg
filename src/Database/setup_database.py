@@ -1,10 +1,10 @@
 import pymysql
 
-def create_database(username, password):
+def create_database(username = None, password = None):
     connection = pymysql.connect(
         host="localhost",
-        user=username,
-        password=password
+        user='raghavd',
+        password="password"
     )
 
     cursor = connection.cursor()
@@ -27,6 +27,6 @@ def create_database(username, password):
     connection.close()
 
 if __name__ == "__main__":
-    username = input("Enter your MySQL username: ")
-    password = input("Enter your MySQL password: ")
-    create_database(username, password)
+    # username = input("Enter your MySQL username: ")
+    # password = input("Enter your MySQL password: ")
+    create_database()

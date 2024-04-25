@@ -7,11 +7,11 @@ import pymysql
 # maybe make all fetchall returns a dictionary instead of a tuple
 # decreases coupling
 class MessageDAO:
-    def __init__(self, username, password):
+    def __init__(self, username=None, password=None):
         self.connection = pymysql.connect(
             host="localhost",
-            user=username,
-            password=password,
+            user='raghavd',
+            password='password',
             database="messaging"
         )
         self.cursor = self.connection.cursor()
@@ -49,13 +49,14 @@ class MessageDAO:
         try:
             self.cursor.execute(sql, values)
             result = self.cursor.fetchone()
-
-            # indexes???
+            
             res = Message(result[1], result[2], result[3], result[4], result[5], result[6])
             return res
         except pymysql.Error as error:
             print("Failed to get latest entry:", error)
             return None 
+        finally:
+            return None
         
     def get_all_entries(self, app):
         sql = "SELECT * FROM messages WHERE App = %s"

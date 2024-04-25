@@ -1,7 +1,7 @@
 
 
 class Message:
-    def __init_(self, id, user_id, sender, message_content, app, date):
+    def __init_(self, id =None, user_id = None, sender = None, message_content= None, app = None, date = None):
         self.user_id = user_id
         self.sender = sender
         self.message_content = message_content
@@ -18,6 +18,15 @@ class Message:
             'date': self.date,
             'app': self.app
         }
-    
+
+    def from_dict(self, data):
+        self.id = data['id']
+        self.user_id = data['user_id']
+        self.sender = data['sender']
+        self.message_content = data['message_content']
+        self.date = data['date']
+        self.app = data['app']
+
+
     def __str__(self):
         return f"Message: {self.id}, {self.user_id}, {self.sender}, {self.message_content}, {self.date}, {self.app}"

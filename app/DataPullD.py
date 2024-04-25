@@ -7,7 +7,7 @@
 from time import sleep
 
 import sys
-sys.path.append('/home/shashwat/Desktop/IIITH/Year3_Sem2/SE/Project3/UpDawg/src/')
+sys.path.append('/home/raghav/Documents/College/SE/Project3/UpDawg/src')
 
 from DataClasses.MessageServices import MessageServices
 from DataEngine.DataEngine import DataEngine

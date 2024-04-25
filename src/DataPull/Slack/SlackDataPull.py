@@ -29,7 +29,7 @@ history.json format:
 class SlackDataPull(DataPull):    
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read('config.cfg')
+        config.read('/home/raghav/Documents/College/SE/Project3/UpDawg/src/DataPull/Slack/config.cfg')
         self.slack_token = config['SLACK']['SLACK_TOKEN']
         self.client = WebClient(token=self.slack_token)	
         self.id_to_channel = {}
@@ -153,14 +153,14 @@ class SlackDataPull(DataPull):
                 except:
                     print("The bot has not been added to channel ", self.id_to_channel[channel_id])
                     
-            with open('history.json', 'w') as f:
+            with open('/home/raghav/Documents/College/SE/Project3/UpDawg/src/DataPull/Slack/history.json', 'w') as f:
                 json.dump(self.history_json, f)
             return messages
         
         except SlackApiError as e:
             print(e)
   
-if __name__ == "__main__":
-    slack = SlackDataPull()
-    slack.isProviderAlive()
-    asyncio.run(slack.pullData(datetime.datetime(2024, 4, 20, 0, 0, 0)))
+# if __name__ == "__main__":
+#     slack = SlackDataPull()
+#     slack.isProviderAlive()
+#     asyncio.run(slack.pullData(datetime.datetime(2024, 4, 20, 0, 0, 0)))

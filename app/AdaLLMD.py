@@ -3,9 +3,9 @@
 from time import sleep
 
 import sys
-sys.path.append('..')
+sys.path.append('/home/raghav/Documents/College/SE/Project3/UpDawg/src')
 
-from src.AdaService.AdaLLM import AdaLLM
+from AdaService.AdaLLM import AdaLLM
 
 
 period = 1200 # in seconds

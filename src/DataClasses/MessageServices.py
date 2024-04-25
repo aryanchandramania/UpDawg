@@ -9,7 +9,7 @@ class MessageServices:
     def __init__(self):
         self.service_names = ['Slack', 'Outlook']
 
-    def getServices():
+    def getServices(self):
         services = {
             'Slack': SlackDataPull(), # check if this instantiation is correct
             'Outlook': OutlookDataPull()
