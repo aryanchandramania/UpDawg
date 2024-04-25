@@ -6,23 +6,22 @@ sys.path.append('..')
 from UserManagement.UserManager import UserManager
 from LLMSummarizer.GeminiSummarizer import GeminiSummarizer
 from LLMSummarizer.GPT3Summarizer import GPT3Summarizer
+from DataClasses.LLMServices import LLMServices
 
 class AdaLLM:
     def __init__(self):
-        self.service_names = ['openai', 'gemini']
+
+        llmService = LLMServices()
+        
+        self.service_names = llmService.service_names
 
          # in days, total period over which number if issues and most recent incident is reported
         self.downPeriod = 30 
 
         self.UserMan = UserManager()
 
-        self.downDetectorUrl={'openai':'https://isdown.app/integrations/openai',
-                              'gemini':'https://isdown.app/integrations/gemini'}
+        self.downDetectorUrl = llmService.getDownDetectorURLs()
         
-
-       
-
-
 
     def choose(self):
         bestService = self.UserMan.getBestService()
