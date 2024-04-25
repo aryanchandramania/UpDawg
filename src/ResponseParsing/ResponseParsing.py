@@ -24,7 +24,7 @@ class ResponseParser:
     def get_current_user_id(self):
         current_user = self.user_manager.get_curr_user()
         if current_user:
-            return current_user["username"]
+            return current_user["email"]
         return None
 
     def save_response(self, response):
