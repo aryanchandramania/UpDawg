@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { View, Text, ScrollView, Dimensions, Alert, Image, Picker } from "react-native";
 import { StatusBar } from 'expo-status-bar';
@@ -6,10 +6,28 @@ import { images } from '../../constants';
 import CustomButton from '../../components/CustomButton';
 // import { Picker } from 'react-native-picker/picker';
 import { SelectList } from 'react-native-dropdown-select-list'
+import { Link, router } from "expo-router";
+import { useGlobalContext } from '../../context/GlobalProvider';
 
 const Home = () => {
 
   const [selected, setSelected] = useState("");
+  const [greeting, setGreeting] = useState("");
+  const { user } = useGlobalContext();
+
+  useEffect(() => {
+    // Get the current time
+    const currentTime = new Date().getHours();
+
+    // Set greeting based on time
+    if (currentTime >= 0 && currentTime < 12) {
+      setGreeting("Good morning");
+    } else if (currentTime >= 12 && currentTime < 18) {
+      setGreeting("Good afternoon");
+    } else {
+      setGreeting("Good evening");
+    }
+  }, []);
 
   const data = [
     {key:'1', value:'1 day'},
@@ -20,6 +38,15 @@ const Home = () => {
     {key:'6', value:'6 days'},
     {key:'7', value:'7 days'},
 ]
+
+  const handlePress = () => {
+      // Alert.alert("Success", "User signed in successfully");
+      router.replace("/summary");
+  }
+
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   return (
     // put some text in the center of screen saying Hello (get username) and center the text too
@@ -37,14 +64,14 @@ const Home = () => {
             className="w-[120px] h-[60px] absolute top-0"
           />
 
-          <Text className="text-3xl font-semibold text-#482A14 mt-5 mb-5 font-psemibold">
-            Hello, Shash!
+          <Text className="text-2xl font-psemibold text-#482A14 mt-5 mb-5">
+            {greeting}, {user && user.username ? capitalizeFirstLetter(user.username) : ''}!
           </Text>
 
           <View className="w-full mb-4">
             <CustomButton
                 title="What's Up, Dawg?"
-                onPress={() => Alert.alert("What's Up, Dawg?")}
+                handlePress={handlePress}
                 otherStyles="mt-6"
               />
           </View>

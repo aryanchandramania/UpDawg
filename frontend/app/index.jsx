@@ -9,11 +9,11 @@ export default function App() {
 
   const { loading, isLogged } = useGlobalContext();
 
-  // if (!loading && isLogged) return <Redirect href="/home" />;
+  if (!loading && isLogged) return <Redirect href="/home" />;
   
   return (
-    <OnboardingTabs />
-    // <SignIn />
+    // <OnboardingTabs />
+    <SignIn />
   );
 }
 

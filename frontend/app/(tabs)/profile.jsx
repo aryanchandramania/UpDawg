@@ -24,24 +24,24 @@ const Profile = () => {
     
     <SafeAreaView classname="bg-primary h-full">
       
-        <View className="w-full flex justify-center min-h-[85vh] px-4 my-6">
+        <View className="w-full flex justify-center min-h-[85vh] px-4 my-6 items-center">
 
           <Image
             source={images.logo}
             resizeMode="contain"
-            className="w-[120px] h-[60px]"
+            className="w-[120px] h-[60px] absolute top-0"
           />
 
-          {/* <Text className="text-xl font-semibold text-#482A14 mt-5 font-psemibold">
-            {user.username}
+          <Text className="text-2xl text-#482A14 mt-5 font-psemibold">
+            {user && user.username ? user.username : ''}
           </Text>
-          <Text className="text-xl font-semibold text-#482A14 mt-5 font-psemibold">
+          <Text className="text-lg text-#482A14 mt-3 font-plight">
             {user.email}
-          </Text> */}
+          </Text>
 
           <TouchableOpacity
               onPress={logout}
-              className="flex w-full items-end mb-10"
+              className="flex w-full items-end mb-10 absolute top-0"
             >
               <Image
                 source={icons.logout}

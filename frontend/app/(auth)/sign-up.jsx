@@ -32,7 +32,7 @@ const SignUp = () => {
       setUser(result);
       setIsLogged(true);
 
-      router.replace("/home");
+      router.replace("/onboarding-tabs");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {
@@ -89,7 +89,7 @@ const SignUp = () => {
               Have an account already?
             </Text>
             <Link
-              href="/home"
+              href="/sign-in"
               className="text-lg font-psemibold text-secondary-100"
             >
               Sign In

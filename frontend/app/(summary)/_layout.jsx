@@ -1,18 +1,12 @@
 import { Redirect, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-const AuthLayout = () => {
+const SummaryLayout = () => {
   return (
     <>
       <Stack>
         <Stack.Screen
-          name="sign-in"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="sign-up"
+          name="summary"
           options={{
             headerShown: false,
           }}
@@ -24,4 +18,4 @@ const AuthLayout = () => {
   )
 }
 
-export default AuthLayout
+export default SummaryLayout

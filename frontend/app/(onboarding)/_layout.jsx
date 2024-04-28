@@ -3,9 +3,18 @@ import { StatusBar } from "expo-status-bar";
 
 const OnboardingLayout = () => {
   return (
-    <View>
-      <Text>OnboardingLayout</Text>
-    </View>
+    <>
+      <Stack>
+        <Stack.Screen
+          name="onboarding-tabs"
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack>
+      
+      {/* <StatusBar backgroundColor="#161622" style="light" /> */}
+    </>
   )
 }
 
