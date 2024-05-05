@@ -31,7 +31,7 @@ history.json format:
 class SlackDataPull(DataPull):    
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read('/home/raghav/Documents/College/SE/Project3/UpDawg/src/DataPull/Slack/config.cfg')
+        config.read('config.cfg')
         self.slack_token = config['SLACK']['SLACK_TOKEN']
         self.client = WebClient(token=self.slack_token)	
         self.id_to_channel = {}

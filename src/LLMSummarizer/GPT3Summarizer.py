@@ -32,6 +32,9 @@ class GPT3Summarizer:
         self.client = OpenAI(api_key=openai_api_key)
 
     def summarize(self, data, prompt):
+
+        return "Hello Aryan Chandramania"
+
         chunks = DataSplitter().split_data_into_chunks(data, 400)
         # print(len(chunks))
         messages=[
