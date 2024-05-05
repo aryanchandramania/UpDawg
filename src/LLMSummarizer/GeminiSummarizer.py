@@ -32,20 +32,34 @@ class GeminiSummarizer:
     def __init__(self, google_api_key):
         genai.configure(api_key=google_api_key)
 
+    # def summarize(self, data, prompt):
+    #     model = genai.GenerativeModel('gemini-pro')
+    #     # print(model.count_tokens(data))
+    #     chunks = DataSplitter().split_data_into_chunks(data, 5000)
+
+    #     chat = model.start_chat(history=[])
+    #     response = ""
+
+    #     for i,chunk in enumerate(chunks):
+    #         response = chat.send_message(prompt + '\n' + chunk) if i == 0 else chat.send_message("Continue the earlier summary with this info:\n" + chunk)
+
+    #     response = chat.send_message("Return the final summary of all the messages")
+
+    #     return response.text
+
     def summarize(self, data, prompt):
         model = genai.GenerativeModel('gemini-pro')
-        # print(model.count_tokens(data))
-        chunks = DataSplitter().split_data_into_chunks(data, 400)
+        chunks = DataSplitter().split_data_into_chunks(data, 5000)
+        summaries = []
 
-        chat = model.start_chat(history=[])
-        response = ""
+        # Generate summaries for each chunk
+        for chunk in chunks:
+            summary = model.generate_content(prompt + '\n' + chunk)
+            summaries.append(summary.text)
 
-        for i,chunk in enumerate(chunks):
-            response = chat.send_message(prompt + '\n' + chunk) if i == 0 else chat.send_message("Continue the earlier summary with this info:\n" + chunk)
-
-        response = chat.send_message("Return the final summary of all the messages")
-
-        return response.text
+        # Generate final combined summary
+        final_summary = model.generate_content("Generate a final combined summary.\n" + "\n".join(summaries))
+        return final_summary.text
     
 if __name__ == '__main__':
 
