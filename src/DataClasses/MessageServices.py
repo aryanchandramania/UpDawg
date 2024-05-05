@@ -1,5 +1,4 @@
-# this has data related to the message services
-import sys
+
 
 
 from DataPull.Slack.SlackDataPull import SlackDataPull

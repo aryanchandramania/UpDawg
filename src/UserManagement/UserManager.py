@@ -4,15 +4,17 @@ from cryptography.fernet import Fernet
 import os    
 from filelock import Timeout, FileLock
 
+rel_path = '../src/UserManagement/'
+
 class UserManager:
     def __init__(self):
         self.user_data = []
-        self.bestSer_path = "LLMService.json"
-        self.lock_path = "LLMService.txt.lock"
+        self.bestSer_path = rel_path+"LLMService.json"
+        self.lock_path = rel_path+"LLMService.txt.lock"
         self.lock = FileLock(self.lock_path, timeout=2)
 
         try:
-            with open("user_data.json", "r") as file:
+            with open(rel_path+"user_data.json", "r") as file:
                 self.user_data = json.load(file)
         except:
             pass
@@ -67,12 +69,12 @@ class UserManager:
         self.user_data.append(user_data)
 
         # Store user data in JSON file
-        with open("user_data.json", "w") as file:
+        with open(rel_path+"user_data.json", "w") as file:
             json.dump(self.user_data, file)
 
 
     def load_user_data(self):
-        with open("user_data.json", "r") as file:
+        with open(rel_path+"user_data.json", "r") as file:
             self.user_data = json.load(file)
 
         loaded_users = []
@@ -129,7 +131,7 @@ class UserManager:
                 if stored_password == entered_password_hash:
                     print("Login successful!")
                     user["is_login"] = True
-                    with open("user_data.json", "w") as file:
+                    with open(rel_path+"user_data.json", "w") as file:
                         json.dump(self.user_data, file)
                     # Update the json file
                     return True
@@ -144,7 +146,7 @@ class UserManager:
         for user in self.user_data:
             if user["is_login"] == True:
                 user["is_login"] = False
-                with open("user_data.json", "w") as file:
+                with open(rel_path+ "user_data.json", "w") as file:
                     json.dump(self.user_data, file)
                 print(f"{user['username']} logged out successfully.")
                 return True

@@ -1,5 +1,4 @@
-import sys
-sys.path.append('..')
+
 from Message.Message import Message
 import pymysql
 from datetime import datetime,timezone

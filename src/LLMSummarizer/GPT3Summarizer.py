@@ -1,8 +1,8 @@
 from openai import OpenAI
 import configparser
 
-config = configparser.ConfigParser()
-config.read('secrets.ini')
+# config = configparser.ConfigParser()
+# config.read('secrets.ini')
 
 class DataSplitter:
     def split_data_into_chunks(self, data, max_tokens):
@@ -196,7 +196,7 @@ Please review and provide feedback by the end of the week.
 Thanks,
 David
 """
-    OPENAI_API_KEY = config['OPENAI']['secretkey']
-    prompt = "Can you provide a summary of the emails and messages received"
-    summarizer = GPT3Summarizer(OPENAI_API_KEY)
-    print(summarizer.summarize(data=data, prompt=prompt))
+    # OPENAI_API_KEY = config['OPENAI']['secretkey']
+    # prompt = "Can you provide a summary of the emails and messages received"
+    # summarizer = GPT3Summarizer(OPENAI_API_KEY)
+    # print(summarizer.summarize(data=data, prompt=prompt))

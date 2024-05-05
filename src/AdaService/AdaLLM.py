@@ -1,8 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from playwright.sync_api import sync_playwright 
-import sys
-sys.path.append('..')
+
 from UserManagement.UserManager import UserManager
 from LLMSummarizer.GeminiSummarizer import GeminiSummarizer
 from LLMSummarizer.GPT3Summarizer import GPT3Summarizer

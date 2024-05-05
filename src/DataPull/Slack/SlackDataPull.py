@@ -6,8 +6,6 @@ from datetime import timezone
 import configparser
 import asyncio
 
-import sys
-sys.path.append('../..')
 from DataPull.DataPull import DataPull
 from Message.Message import Message
 from UserManagement.UserManager import UserManager
@@ -28,10 +26,12 @@ history.json format:
 }
 """
 
+rel_path='../src/DataPull/Slack/'
+
 class SlackDataPull(DataPull):    
     def __init__(self):
         config = configparser.ConfigParser()
-        config.read('config.cfg')
+        config.read(rel_path+'config.cfg')
         self.slack_token = config['SLACK']['SLACK_TOKEN']
         self.client = WebClient(token=self.slack_token)	
         self.id_to_channel = {}
@@ -155,7 +155,7 @@ class SlackDataPull(DataPull):
                 except Exception as e:
                     print("The bot has not been added to channel ", self.id_to_channel[channel_id], e)
                     
-            with open('/home/raghav/Documents/College/SE/Project3/UpDawg/src/DataPull/Slack/history.json', 'w') as f:
+            with open(rel_path+'history.json', 'w') as f:
                 json.dump(self.history_json, f)
             return messages
         

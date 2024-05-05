@@ -3,8 +3,6 @@ import json
 from datetime import datetime
 from filelock import Timeout, FileLock
 
-import sys
-sys.path.append('..')
 from UserManagement.UserManager import UserManager
 
 class ResponseParser:

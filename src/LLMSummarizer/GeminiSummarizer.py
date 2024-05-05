@@ -1,8 +1,8 @@
 import google.generativeai as genai
 import configparser
 
-config = configparser.ConfigParser()
-config.read('secrets.ini')
+# config = configparser.ConfigParser()
+# config.read('secrets.ini')
 
 
 class DataSplitter:
@@ -51,7 +51,7 @@ class GeminiSummarizer:
     def summarize(self, data, prompt):
 
         model = genai.GenerativeModel('gemini-pro')
-        chunks = DataSplitter().split_data_into_chunks(data, 5000)
+        chunks = DataSplitter().split_data_into_chunks(data, 10000)
         summaries = []
 
         # Generate summaries for each chunk
@@ -196,7 +196,7 @@ Please review and provide feedback by the end of the week.
 Thanks,
 David
 """
-    GOOGLE_API_KEY = config['GEMINI']['secretkey']
-    prompt = "Can you provide a summary of the emails and slack messages received"
-    summarizer = GeminiSummarizer(GOOGLE_API_KEY)
-    print(summarizer.summarize(data=data, prompt=prompt))
+    # GOOGLE_API_KEY = config['GEMINI']['secretkey']
+    # prompt = "Can you provide a summary of the emails and slack messages received"
+    # summarizer = GeminiSummarizer(GOOGLE_API_KEY)
+    # print(summarizer.summarize(data=data, prompt=prompt))

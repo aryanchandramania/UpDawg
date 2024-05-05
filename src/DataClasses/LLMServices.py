@@ -1,5 +1,4 @@
-import sys 
-sys.path.append('..')
+
 
 class LLMServices:
     def __init__(self):

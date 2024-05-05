@@ -1,5 +1,4 @@
-import sys
-sys.path.append('..')
+
 from Database import message_dao
 # from DataPull.Outlook import OutlookDataPull
 # from DataPull.Slack import SlackDataPull

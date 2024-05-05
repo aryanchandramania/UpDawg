@@ -13,15 +13,14 @@ from msgraph.generated.models.recipient import Recipient
 from msgraph.generated.models.email_address import EmailAddress
 import configparser
 from datetime import datetime, timezone
-import sys
 
-sys.path.append('..')
-from DataPull import DataPull
-sys.path.append('../..')
+from DataPull.DataPull import DataPull
+
 from Message.Message import Message
 from UserManagement.UserManager import UserManager
 import pytz
 
+rel_path='../src/DataPull/Outlook/'
 
 
 class OutlookDataPull():
@@ -32,7 +31,7 @@ class OutlookDataPull():
     def __init__(self):
         # Load settings
         config = configparser.ConfigParser()
-        config.read(['config.cfg', 'config.dev.cfg'])
+        config.read([rel_path+'config.cfg', rel_path+'config.dev.cfg'])
         azure_settings = config['azure']
         self.settings = azure_settings
 
