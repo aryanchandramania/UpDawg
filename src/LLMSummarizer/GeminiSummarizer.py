@@ -29,6 +29,7 @@ class DataSplitter:
         return chunks
 
 class GeminiSummarizer:
+    
     def __init__(self, google_api_key):
         genai.configure(api_key=google_api_key)
 
@@ -48,6 +49,7 @@ class GeminiSummarizer:
     #     return response.text
 
     def summarize(self, data, prompt):
+
         model = genai.GenerativeModel('gemini-pro')
         chunks = DataSplitter().split_data_into_chunks(data, 5000)
         summaries = []

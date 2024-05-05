@@ -10,7 +10,9 @@ from datetime import datetime, timezone, timedelta
 from time import sleep
 
 import sys
-sys.path.append('/home/raghav/Documents/College/SE/Project3/UpDawg/src')
+# sys.path.append('/home/raghav/Documents/College/SE/Project3/UpDawg/src')
+# todo change the path to the src folder
+sys.path.append("../src")
 
 from Prompter.Prompter import Prompter
 # from src.ResponseParser.ResponseParser import ResponseParser

@@ -32,7 +32,7 @@ class OutlookDataPull():
     def __init__(self):
         # Load settings
         config = configparser.ConfigParser()
-        config.read(['/home/raghav/Documents/College/SE/Project3/UpDawg/src/DataPull/Outlook/config.cfg', '/home/raghav/Documents/College/SE/Project3/UpDawg/src/DataPull/Outlook/config.dev.cfg'])
+        config.read(['config.cfg', 'config.dev.cfg'])
         azure_settings = config['azure']
         self.settings = azure_settings
 
