@@ -54,8 +54,11 @@ class GeminiSummarizer:
             summaries.append(summary.candidates[0].content.parts[0].text)
 
         # Generate final combined summary
-        final_summary = model.generate_content("Generate a final combined summary.\n" + "\n".join(summaries))
-        return final_summary.candidates[0].content.parts[0].text
+        if len(chunks) > 1:
+            final_summary = model.generate_content("Generate a final combined summary.\n" + "\n".join(summaries))
+            return final_summary.candidates[0].content.parts[0].text
+        
+        return summaries[-1]
     
 if __name__ == '__main__':
 

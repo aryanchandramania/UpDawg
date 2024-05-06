@@ -34,6 +34,7 @@ class GPT3Summarizer:
         chunk_messages=[
                 {"role": "system", "content": prompt},
             ]
+        last_response = ""
         for i,chunk in enumerate(chunks):            
             response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
@@ -43,16 +44,20 @@ class GPT3Summarizer:
                 ]
             )
             chunk_messages.append({"role": "assistant", "content": response.choices[0].message.content})
+            last_response = response.choices[0].message.content
         
-        chunk_messages.append({"role": "user", "content": "Generate a final combined summary."})  
+        if len(chunks) > 1:
+            chunk_messages.append({"role": "user", "content": "Generate a final combined summary."})  
 
-        # Create completion for final summary
-        final_response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=chunk_messages
-        )
+            # Create completion for final summary
+            final_response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=chunk_messages
+            )
 
-        return final_response.choices[0].message.content
+            return final_response.choices[0].message.content
+
+        return last_response
     
 if __name__ == '__main__':
 
