@@ -5,23 +5,17 @@ import configparser
 # config.read('secrets.ini')
 
 class DataSplitter:
-    def split_data_into_chunks(self, data, max_tokens):
+    def split_data_into_chunks(self, data, max_words):
         chunks = []
-        remaining_data = data.strip()
+        remaining_data = data.strip().split()  # Split the data into words
 
         while remaining_data:
-            if len(remaining_data) <= max_tokens:
-                chunks.append(remaining_data)
+            if len(remaining_data) <= max_words:
+                chunks.append(' '.join(remaining_data))
                 break
 
-            last_full_stop = remaining_data[:max_tokens].rfind(".")
-
-            if last_full_stop == -1:
-                chunk = remaining_data[:max_tokens]
-                remaining_data = remaining_data[max_tokens:]
-            else:
-                chunk = remaining_data[:last_full_stop+1]  # Include the full stop
-                remaining_data = remaining_data[last_full_stop+1:]
+            chunk = ' '.join(remaining_data[:max_words])
+            remaining_data = remaining_data[max_words:]
 
             chunks.append(chunk.strip())
 
