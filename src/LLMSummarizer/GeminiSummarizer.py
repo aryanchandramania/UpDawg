@@ -51,11 +51,11 @@ class GeminiSummarizer:
         # Generate summaries for each chunk
         for chunk in chunks:
             summary = model.generate_content(prompt + '\n' + chunk)
-            summaries.append(summary.text)
+            summaries.append(summary.candidates[0].content.parts[0].text)
 
         # Generate final combined summary
         final_summary = model.generate_content("Generate a final combined summary.\n" + "\n".join(summaries))
-        return final_summary.text
+        return final_summary.candidates[0].content.parts[0].text
     
 if __name__ == '__main__':
 
