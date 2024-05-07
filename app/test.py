@@ -26,7 +26,7 @@ def processRequest():
     response = prompter.prompt(startDate)
     # response_parser = ResponseParser()
     # response = response_parser.parse(response)
-    print(response)
+    # print(response)
     return response
 
 
@@ -36,7 +36,7 @@ def login(data):
     password = data['password']
     user_manager = UserManager()
     response = user_manager.login(username, password)
-    print(response)
+    # print(response)
     print('Logged in')
 
 # def logout():

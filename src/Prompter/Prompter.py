@@ -20,6 +20,7 @@ class Prompter:
     def prompt(self, dateTime):
         data = self.DE.getData(dateTime)
         user_prompt = self.prompt_contructor(data)
+        print("User Prompt:")
         print(user_prompt)
 
         # call the service on the system and user prompt

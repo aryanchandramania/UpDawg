@@ -31,31 +31,33 @@ class GPT3Summarizer:
 
         chunks = DataSplitter().split_data_into_chunks(data, 100000)
         # print(len(chunks))
-        messages=[
+        chunk_messages=[
                 {"role": "system", "content": prompt},
             ]
-        for i,chunk in enumerate(chunks):
-            # print(f"Chunk {i}:")
-            #update response
-            if i>0:
-                prompt = "Continue the above summary: "
-            
-            messages.append({"role": "user", "content": f"{prompt} {chunk}"})
+        last_response = ""
+        for i,chunk in enumerate(chunks):            
             response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
-                messages=messages
+                messages=[
+                    {"role": "system", "content": prompt},
+                    {"role": "user", "content": f"{prompt} {chunk}"}
+                ]
             )
-            messages.append({"role": "assistant", "content": response.choices[0].message.content})
+            chunk_messages.append({"role": "assistant", "content": response.choices[0].message.content})
+            last_response = response.choices[0].message.content
         
-        messages.append({"role": "user", "content": "Generate a final combined summary."})  
+        if len(chunks) > 1:
+            chunk_messages.append({"role": "user", "content": "Generate a final combined summary."})  
 
-        # Create completion for final summary
-        final_response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=messages
-        )
+            # Create completion for final summary
+            final_response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=chunk_messages
+            )
 
-        return final_response.choices[0].message.content
+            return final_response.choices[0].message.content
+
+        return last_response
     
 if __name__ == '__main__':
 
