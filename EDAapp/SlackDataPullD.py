@@ -2,10 +2,14 @@
 
 import asyncio
 import pika
-from SlackDataPull import SlackDataPull
 from datetime import datetime, timezone
 import json
 import pytz
+
+import sys
+sys.path.append('../src')
+
+from DataPull.Slack.SlackDataPull import SlackDataPull
 
 
 def start_slack_publisher():
@@ -26,6 +30,10 @@ def start_slack_publisher():
             messages = puller.pullData(startDate)
             # parsing
             json_messages = [msg.to_dict() for msg in messages]
+            if len(json_messages) == 0:
+                json_messages = [{"app":"Slack","NOTFOUND":"true"}]
+
+
             message = json.dumps(json_messages)
             channel.basic_publish(exchange='', routing_key='data_queue', body=message)
 

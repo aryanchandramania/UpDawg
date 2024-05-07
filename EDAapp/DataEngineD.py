@@ -3,11 +3,16 @@
 
 import pika
 import json
-from src.DataEngine.DataEngine import DataEngine
-from src.DataClasses.MessageServices import MessageServices
-from src.Message.Message import Message
 from datetime import datetime, timezone
 import pytz
+
+
+import sys
+sys.path.append('../src')
+from DataEngine.DataEngine import DataEngine
+from DataClasses.MessageServices import MessageServices
+from Message.Message import Message
+
 
 def start_data_engine():
     # RabbitMQ setup
@@ -26,8 +31,8 @@ def start_data_engine():
     # this startdate is basically the latest entry date
     def send_request_toPullData(key, startdate):
         # Send request for data
-        # channel.basic_publish(exchange='', routing_key=key, body=json.dumps({'startdate': startdate}))
-        channel.basic_publish(exchange='req_exchange', body=json.dumps({'startdate': startdate}))
+        channel.basic_publish(exchange='', routing_key=key, body=json.dumps({'startdate': startdate}))
+        # channel.basic_publish(exchange='req_exchange', body=json.dumps({'startdate': startdate}))
         print(" [x] Sent request for pulling data")
 
 
@@ -35,38 +40,50 @@ def start_data_engine():
     # it process the startdate and stores it in the global variable
     # and it will pull gap data amount
     def getData_C(ch, method, properties, body):
-        global startDate
+        nonlocal startDate, chunks_received
         # parse startdate
         body = json.loads(body.decode('utf-8'))
         startDate = pytz.utc.localize(datetime.strptime(body['startdate'], "%Y-%m-%d %H:%M:%S"))
 
 
-        latest_entries = de.checkGap()
+        latest_entries = de.checkGap(startDate)
+        print(latest_entries)
+
+        # change this, remove fanout and send to specific queues, also modify chunks_received
         for app_name in app_names:
             if latest_entries[app_name] is not None:
                 send_request_toPullData(f'{app_name}_request_queue',latest_entries[app_name].strftime("%Y-%m-%d %H:%M:%S"))
+                print(chunks_received)
+            else:
+                chunks_received[app_name] = True
+                print('Not pulling data from', app_name)
                 # gapData = self.apps[app_name].pullData(latest_entries[app_name])
                 
 
     # this is called when gap data is received from the data pullers
     # if all data has been received => it will process the data and send it to prompter
     def receiveChunk_C(ch, method, properties, body):
-        global chunks_received
+        nonlocal chunks_received, startDate
         print(" [x] Received data chunk")
 
         body = json.loads(body.decode('utf-8'))
-        
+        print(body)
 
-        gapData=[]
-        for msg in body:
-            msgobj = Message()
-            msgobj.from_dict(msg)
-            gapData.append(msg)
+        if len(body) == 1 and 'NOTFOUND' in body[0]:
+            app_name = body[0]['app']
+            # chunks_received[app_name] = True
+        else:
+            gapData=[]
+            for msg in body:
+                msgobj = Message()
+                msgobj.from_dict(msg)
+                gapData.append(msgobj)
+            
+            de.pushData(gapData)
         
-        de.pushData(gapData)
-
-      
-        app_name = body[0]['app']
+            app_name = body[0]['app']
+        
+        # global chunks_received
         chunks_received[app_name] = True
 
         # if both data chunks came through

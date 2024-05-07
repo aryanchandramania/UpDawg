@@ -1,6 +1,10 @@
 import pika
 import json
-from src.AdaService.AdaLLM import AdaLLM
+
+import sys
+sys.path.append('../src')
+
+from AdaService.AdaLLM import AdaLLM
 
 def start_LLMSwitcher_engine():
     # RabbitMQ setup
@@ -18,7 +22,7 @@ def start_LLMSwitcher_engine():
 
         adlm.scoreLLM()
         summarizer = adlm.choose()
-        summary = summarizer(prompt, sys_prompt)
+        summary = summarizer.summarize(prompt, sys_prompt)
         
         channel.basic_publish(exchange='', routing_key='summary_queue', body=json.dumps({'summary':summary}))
 

@@ -2,10 +2,14 @@
 
 import asyncio
 import pika
-from OutlookDataPull import OutlookDataPull
 from datetime import datetime, timezone
 import json
 import pytz
+
+import sys
+sys.path.append('../src')
+from DataPull.Outlook.OutlookDataPull import OutlookDataPull
+
 
 
 def start_outlook_publisher():
@@ -25,6 +29,10 @@ def start_outlook_publisher():
             messages = await puller.pullData(startDate)
             # parsing
             json_messages = [msg.to_dict() for msg in messages]
+            if len(json_messages) == 0:
+                json_messages = [{"app":"Outlook","NOTFOUND":"true"}]
+
+
             message = json.dumps(json_messages)
             channel.basic_publish(exchange='', routing_key='data_queue', body=message)
 

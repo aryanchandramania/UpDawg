@@ -1,7 +1,11 @@
-from src.Prompter.Prompter import Prompter
+
 import pika
 import json
-from src.Message.Message import Message
+
+import sys
+sys.path.append('../src')
+from Message.Message import Message
+from Prompter.Prompter import Prompter
 
 
 def kick_off(startdate):
@@ -38,7 +42,7 @@ def kick_off(startdate):
         
 
     def handoffToResponseParser(ch, method, properties, body):
-        global final_summary
+        nonlocal final_summary
         print(" [x] Received response from LLM")
         body = json.loads(body.decode('utf-8'))
         print(body['summary'])

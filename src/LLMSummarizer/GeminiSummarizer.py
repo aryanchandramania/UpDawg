@@ -45,17 +45,20 @@ class GeminiSummarizer:
     def summarize(self, data, prompt):
 
         model = genai.GenerativeModel('gemini-pro')
-        chunks = DataSplitter().split_data_into_chunks(data, 10000)
+        chunks = DataSplitter().split_data_into_chunks(data, 100000)
         summaries = []
 
         # Generate summaries for each chunk
         for chunk in chunks:
             summary = model.generate_content(prompt + '\n' + chunk)
-            summaries.append(summary.text)
+            summaries.append(summary.candidates[0].content.parts[0].text)
 
         # Generate final combined summary
-        final_summary = model.generate_content("Generate a final combined summary.\n" + "\n".join(summaries))
-        return final_summary.text
+        if len(chunks) > 1:
+            final_summary = model.generate_content("Generate a final combined summary.\n" + "\n".join(summaries))
+            return final_summary.candidates[0].content.parts[0].text
+        
+        return summaries[-1]
     
 if __name__ == '__main__':
 

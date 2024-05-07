@@ -8,6 +8,7 @@
 # Also support login, logout, and user onboarding functions on various endpoints
 from datetime import datetime, timezone, timedelta
 from time import sleep
+from PrompterD import kick_off
 
 import sys
 sys.path.append("../src")
@@ -22,11 +23,10 @@ def processRequest():
     data = {'days': 1}
     days = data['days']
     startDate = datetime.now(timezone.utc) - timedelta(days=days)
-    prompter = Prompter("Summarize the following message data from various sources")
-    response = prompter.prompt(startDate)
+    response = kick_off(startDate)
     # response_parser = ResponseParser()
     # response = response_parser.parse(response)
-    # print(response)
+    print(response)
     return response
 
 
@@ -36,7 +36,7 @@ def login(data):
     password = data['password']
     user_manager = UserManager()
     response = user_manager.login(username, password)
-    # print(response)
+    print(response)
     print('Logged in')
 
 # def logout():
@@ -75,7 +75,7 @@ onboarding({'username': "raghav", 'email': "raghav.donakanti@students.iiit.ac.in
 
 login({'username': "raghav", 'password': "hello123"})
 
-sleep(10)
+sleep(60)
 print('start')
 
 processRequest()

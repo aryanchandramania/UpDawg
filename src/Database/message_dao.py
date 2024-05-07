@@ -10,8 +10,8 @@ class MessageDAO:
     def __init__(self, username=None, password=None):
         self.connection = pymysql.connect(
             host="localhost",
-            user='raghavd',
-            password='password',
+            user='root',
+            password='aryan',
             database="messaging"
         )
         self.cursor = self.connection.cursor()
