@@ -65,7 +65,7 @@ const Home = ( ) => {
             className="w-[120px] h-[60px] absolute top-0"
           />
 
-          <Text className="text-2xl font-psemibold text-#482A14 mt-5 mb-5">
+          <Text className="text-xl font-psemibold text-#482A14 mt-5 mb-5">
             {greeting}, {user && user.username ? capitalizeFirstLetter(user.username) : ''}!
           </Text>
 
