@@ -9,12 +9,13 @@
 
 from flask import Flask, request, jsonify 
 import sys
+from PrompterD import kick_off
 sys.path.append('../src')
 
 from Prompter.Prompter import Prompter
 from ResponseParsing.ResponseParsing import ResponseParser
 from UserManagement.UserManager import UserManager
-from PrompterD import kick_off
+
 
 from datetime import datetime, timezone
 
@@ -26,7 +27,11 @@ def processRequest():
     days = data['days']
     startDate = datetime.now(timezone.utc) - datetime.timedelta(days=days)
     response = kick_off(startDate)
-    return jsonify(response)
+    response_parser = ResponseParser()
+    response = response_parser.get_clean_response(response)
+    response_parser.save_response(response)
+    res = {'message': response}
+    return jsonify(res)
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -35,16 +40,22 @@ def login():
     password = data['password']
     user_manager = UserManager()
     response = user_manager.login(username, password)
-    return jsonify(response)
+    res = {'message': ('OK' if response else 'Failed')}
+    return jsonify(res)
 
 @app.route('/logout', methods=['POST'])
 def logout():
     user_manager = UserManager()
     response = user_manager.logout()
-    return jsonify(response)
+    res = {'message': ('OK' if response else 'Failed')}
+    return jsonify(res)
 
 @app.route('/onboarding', methods=['POST'])
 def onboarding():
+
+    response_parser = ResponseParser()
+    response_parser.create_response_file()
+
 
     # username, email, password, gemini_api_key, openai_api_key, slack_email, slack_id
     data = request.get_json()
@@ -66,6 +77,8 @@ def onboarding():
         slack_email=slack_email,
         slack_id=slack_id
     )
+
+    print('User onboarding over')
 
 
 

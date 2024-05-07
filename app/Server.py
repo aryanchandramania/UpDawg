@@ -88,7 +88,8 @@ def getSumm():
     res = {'message': summaries}
     return jsonify(res)
 
-
+if __name__ == '__main__':
+    app.run(host='exp://192.168.2.207',port=5000, debug=True)
 
 
 
