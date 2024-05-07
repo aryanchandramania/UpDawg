@@ -36,7 +36,10 @@ def kick_off(startdate):
 
                 result[app_name].append(msgobj)
         
+        # print(result)
         stringifiedPrompt = prmpt.prompt_contructor(result)
+        print('Sending prompt')
+        print(stringifiedPrompt)
         channel.basic_publish(exchange='', routing_key='prompt_queue', body=json.dumps({'prompt':stringifiedPrompt,'sys_prompt':prmpt.summary_sys_prompt}))
         channel.basic_cancel(consumer_tag=method.consumer_tag)
         

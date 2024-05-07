@@ -107,8 +107,8 @@ class UserManager:
         self.user_data, users = self.load_user_data()
         for user in users:
             if user["is_login"] == True:
-                keys["gemini"] = user["gemini_api_key"]
-                keys["openai"] = user["openai_api_key"]
+                keys["gemini"] = (user["gemini_api_key"] if user["gemini_api_key"] != '' else None)
+                keys["openai"] = (user["openai_api_key"] if user["openai_api_key"] != '' else None)
                 return keys
         return keys
     

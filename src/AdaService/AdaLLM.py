@@ -35,6 +35,7 @@ class AdaLLM:
     # this may run periodically
     def scoreLLM(self):
         filt = self.filterBasedOnKey()
+        print(filt)
         if len(filt) == 1:
             self.UserMan.setBestService(filt[0])
             return
@@ -44,6 +45,7 @@ class AdaLLM:
 
     def filterBasedOnKey(self):
         APIKeys = self.UserMan.get_keys()
+        print('APIKeys:', APIKeys)
         filt=[]
         for s in self.service_names:
             if APIKeys[s] != None:

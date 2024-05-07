@@ -43,7 +43,9 @@ class SlackDataPull(DataPull):
         return datetime.datetime.fromtimestamp(ts, pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
     
     def convert_date_to_ts(self, date):
-        return datetime.datetime.timestamp(date)
+        return datetime.datetime.timestamp(date) + 10
+        # add 10 seconds to the timestamp to avoid getting the same message again
+
 
     def too_old(self, ts, start_time: datetime):    
         return datetime.datetime.fromtimestamp(ts, pytz.utc) < start_time
