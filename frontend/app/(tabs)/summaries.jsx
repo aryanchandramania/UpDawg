@@ -8,10 +8,16 @@ import CustomButton from '../../components/CustomButton';
 import { SelectList } from 'react-native-dropdown-select-list'
 import { Link, router } from "expo-router";
 import { useGlobalContext } from '../../context/GlobalProvider';
+// import { getHello } from "../../lib/appwrite";
 
 const Summaries = () => {
 
   // make 5 boxes which are clickable and these boxes will be the summaries of the user's data
+
+  // useEffect(() => {
+  //   getHello();
+  // }
+  // , []);
 
   const summaries = [
     { id: 1, title: 'Summary 1', content: "The sun peeked over the horizon, casting a warm golden glow across the dewy meadow. Delicate wildflowers danced in the gentle morning breeze, their vibrant petals a kaleidoscope of colors. Nearby, a babbling brook trickled over mossy rocks, its soothing melody filling the air. In the distance, majestic snow-capped mountains stood as silent sentinels, their peaks piercing the azure sky. A lone deer grazed peacefully, occasionally lifting its head to survey its idyllic surroundings. Nature's grandeur was on full display, a serene and rejuvenating scene that reminded all who witnessed it of the simple yet profound beauty that exists in the world."},

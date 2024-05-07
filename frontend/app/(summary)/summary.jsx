@@ -7,9 +7,12 @@ import { icons } from '../../constants';
 import CustomButton from '../../components/CustomButton';
 // import { Picker } from 'react-native-picker/picker';
 import { SelectList } from 'react-native-dropdown-select-list'
-import { Link, router } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
+import { useGlobalContext } from '../../context/GlobalProvider';
 
-const Summary = () => {
+const Summary = ( ) => {
+
+  const { user, days, setDays } = useGlobalContext();
 
   // create a summary box which is a card with a title and a description
 
@@ -19,7 +22,7 @@ const Summary = () => {
 
   // State to manage displayed words
   const [displayedWords, setDisplayedWords] = useState([]);
-  
+
   // Index of the current word being displayed
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
@@ -40,40 +43,43 @@ const Summary = () => {
     <SafeAreaView classname="h-full">
       <ScrollView>
         <View className="bg-primary w-full flex min-h-[5vh] px-4 my-6 items-center mb-10">
-        
-        <TouchableOpacity className="absolute left-0"  onPress={() => router.replace('/home')}>
-          <Image 
+
+          <TouchableOpacity className="absolute left-0" onPress={() => router.replace('/home')}>
+            <Image
               source={icons.back}
               resizeMode="contain"
               className="w-[60px] h-[70px]"
-          />
-        </TouchableOpacity>
+            />
+          </TouchableOpacity>
 
-        <Image
-              source={images.logo}
-              resizeMode="contain"
-              className="w-[120px] h-[60px] absolute top-0"
-        />
+          <Image
+            source={images.logo}
+            resizeMode="contain"
+            className="w-[120px] h-[60px] absolute top-0"
+          />
 
         </View>
+
+
         <View className="bg-primary w-full flex min-h-[85vh] px-4 my-6 items-center">
 
-        <View style={{ backgroundColor: '#ebe7e1', borderRadius: 10, padding: 13, marginBottom: 20 }}>
+          <View style={{ backgroundColor: '#ebe7e1', borderRadius: 10, padding: 13, marginBottom: 20 }}>
             {/* First Text */}
             <View style={{ marginBottom: 10 }}>
               <Text className="text-lg font-psemibold mb-4">
-                Here's your summary for the last X days
+                Here's your summary for the last {days} days!
               </Text>
               <Text className="text-s font-pregular">
                 {displayedWords.join(' ')}
               </Text>
             </View>
-        </View>
+          </View>
 
         </View>
       </ScrollView>
     </SafeAreaView>
   )
 }
+
 
 export default Summary

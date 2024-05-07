@@ -8,6 +8,7 @@ import {
     Storage,
   } from "react-native-appwrite";
 
+
 export const config = {
     endpoint: 'https://cloud.appwrite.io/v1',
     platform: 'com.jsm.updawg',
@@ -108,4 +109,93 @@ export async function createUser(email, password, username) {
       throw new Error(error);
     }
   }
+
+  export async function sendLoginData(loginData) {
+    try {
+      await fetch("http://192.168.2.224:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.message);
+        });
+    }
+    catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  export async function sendLogout() {
+    try {
+      await fetch("http://192.168.2.224:3000/logout", {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.message);
+        });
+
+      }
+      catch (error) {
+        throw new Error(error);
+      }
+  }
+
+  export async function sendSelection(days) {
+    try {
+      await fetch("http://192.168.2.224:3000/processRequest", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({"days": days}),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.message);
+          return data.message;
+        });
+    }
+    catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  export async function onboarding(onboardingData) {
+    try {
+      await fetch("http://192.168.2.224:3000/onboarding", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(onboardingData),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data.message);
+        });
+    }
+    catch (error) {
+      throw new Error(error);
+    }
+  }
+
+
+//   export async function getHello() {
+//     try {
+//         const response = await fetch("http://192.168.2.224:3000/sendHello", {
+//             method: "GET",
+//         });
+//         const data = await response.json();
+//         console.log(data);
+//         return data; // Optionally return data to the caller
+//     } catch (error) {
+//         console.error('Error fetching data:', error);
+//         throw error;
+//     }
+// }
 

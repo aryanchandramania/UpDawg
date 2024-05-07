@@ -36,7 +36,7 @@ const Profile = () => {
             {user && user.username ? user.username : ''}
           </Text>
           <Text className="text-lg text-#482A14 mt-3 font-plight">
-            {user.email}
+            {user && user.email ? user.email : ""}
           </Text>
 
           <TouchableOpacity

@@ -1,13 +1,22 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { useEffect } from 'react'
-import { Slot, Stack, SplashScreen } from 'expo-router'; 
+import { Slot, SplashScreen, Stack } from 'expo-router'; 
 import { useFonts } from 'expo-font';
 
 import GlobalProvider from '../context/GlobalProvider';
 import { useGlobalContext } from "../context/GlobalProvider";
-
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { SignIn } from './(auth)/sign-in';
+import { Home } from './(tabs)/home';
+import { Summary } from './(summary)/summary';
+import { OnboardingTabs } from './(onboarding)/onboarding-tabs';
+import { App } from './index';
 
 SplashScreen.preventAutoHideAsync();
+
+// const Stack = createNativeStackNavigator();
+
 
 const RootLayout = () => {
 
@@ -40,10 +49,11 @@ const RootLayout = () => {
       }  
 
   return (
+    
     <GlobalProvider>
       <Stack>
           <Stack.Screen name="index" options={{ headerShown: false}} />
-          <Stack.Screen name="(auth)" options={{ headerShown: false}} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false}}  />
           <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
           <Stack.Screen name="(onboarding)" options={{ headerShown: false}} />
           <Stack.Screen name="(summary)" options={{ headerShown: false}} />

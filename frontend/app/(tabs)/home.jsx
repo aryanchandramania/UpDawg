@@ -6,14 +6,15 @@ import { images } from '../../constants';
 import CustomButton from '../../components/CustomButton';
 // import { Picker } from 'react-native-picker/picker';
 import { SelectList } from 'react-native-dropdown-select-list'
-import { Link, router } from "expo-router";
+import { Link, router, useRouter } from "expo-router";
 import { useGlobalContext } from '../../context/GlobalProvider';
 
-const Home = () => {
+const Home = ( ) => {
 
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState("1");
   const [greeting, setGreeting] = useState("");
-  const { user } = useGlobalContext();
+  const { user, days, setDays } = useGlobalContext();
+  const route = useRouter();
 
   useEffect(() => {
     // Get the current time
@@ -41,7 +42,11 @@ const Home = () => {
 
   const handlePress = () => {
       // Alert.alert("Success", "User signed in successfully");
-      router.replace("/summary");
+      const numericalValue = parseInt(selected);
+      setDays(numericalValue);
+      // console.log(days)
+      router.replace('/summary');
+      // navigation.navigate('Summary', { selectedValue: selected });
   }
 
   const capitalizeFirstLetter = (str) => {
@@ -49,10 +54,6 @@ const Home = () => {
   };
 
   return (
-    // put some text in the center of screen saying Hello (get username) and center the text too
-    // on top of the screen put a logo of your choice and center the image too
-    // also make a button that says What's UpDawg
-    // Also have a dropdown menu beside the button on the right side with 1-7 days options
 
     <SafeAreaView classname="h-full">
       {/* <ScrollView> */}
@@ -64,7 +65,7 @@ const Home = () => {
             className="w-[120px] h-[60px] absolute top-0"
           />
 
-          <Text className="text-2xl font-psemibold text-#482A14 mt-5 mb-5">
+          <Text className="text-xl font-psemibold text-#482A14 mt-5 mb-5">
             {greeting}, {user && user.username ? capitalizeFirstLetter(user.username) : ''}!
           </Text>
 
