@@ -40,13 +40,13 @@ class SlackDataPull(DataPull):
         self.UserMan = UserManager()
 
     def convert_ts_to_date(self, ts):
-        return pytz.utc.localize(datetime.datetime.fromtimestamp(ts)).strftime('%Y-%m-%d %H:%M:%S')
+        return datetime.datetime.fromtimestamp(ts, pytz.utc).strftime('%Y-%m-%d %H:%M:%S')
     
     def convert_date_to_ts(self, date):
         return datetime.datetime.timestamp(date)
 
     def too_old(self, ts, start_time: datetime):    
-        return pytz.utc.localize(datetime.datetime.fromtimestamp(ts)) < start_time
+        return datetime.datetime.fromtimestamp(ts, pytz.utc) < start_time
     
     def nzprint(self, text, value, ztext="results"):
         if value != 0:
