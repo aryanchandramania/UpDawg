@@ -12,13 +12,18 @@ import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignIn = () => {
 
-  const { setUser, setIsLogged } = useGlobalContext();
+  const { user, setUser, setIsLogged } = useGlobalContext();
 
   const [isSubmitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
+
+  // const loginData = {
+  //   username: "",
+  //   password: "",
+  // };
 
   const submit = async () => {
     if (form.email === "" || form.password === "") {
@@ -33,8 +38,13 @@ const SignIn = () => {
       setUser(result);
       setIsLogged(true);
 
+      // loginData.username = form.email;
+      // loginData.password = form.password;
+
+      // await sendLoginData(loginData);
+
       Alert.alert("Success", "User signed in successfully");
-      router.replace("/onboarding-tabs");
+      router.replace("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
     } finally {

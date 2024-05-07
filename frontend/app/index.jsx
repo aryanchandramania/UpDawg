@@ -4,6 +4,10 @@ import { Link, Redirect } from 'expo-router';
 import SignIn from './(auth)/sign-in'; // Import your SignIn component
 import { useGlobalContext } from "../context/GlobalProvider";
 import OnboardingTabs from './(onboarding)/onboarding-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
 
@@ -13,7 +17,10 @@ export default function App() {
   
   return (
     // <OnboardingTabs />
-    <SignIn />
+    // <NavigationContainer>
+      <SignIn />
+    
   );
 }
+
 

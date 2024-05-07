@@ -36,8 +36,11 @@ const OnboardingTabs = () => {
     if (openAIAPI === "" && geminiAPI === "") {
       Alert.alert("Error", "Please enter atleast one API key to continue");
     }
+    if (slack.slackID === "" || slack.slackEmail === "") {
+      Alert.alert("Error", "Please enter both Slack ID and Email to continue");
+    }
     else {
-        onboardingRef.current.goNext();
+      router.replace("/home");
     }
   }
 
@@ -46,7 +49,7 @@ const OnboardingTabs = () => {
       Alert.alert("Error", "Please enter both Slack ID and Email to continue");
     }
     else {
-        router.replace("/home");
+        onboardingRef.current.goNext();
     }
   }
 
@@ -61,26 +64,64 @@ const OnboardingTabs = () => {
                 skipLabel=""
                 nextLabel=""
                 pages={[
+                    // {
+                    //   backgroundColor: '#f5f3f0',
+                    //   image: (
+                    //     <View style={styles.lottie}>
+                    //         <LottieView style={{flex: 1}} source={require('../../assets/animations/mail.json')}  autoPlay loop={false}/>
+                    //         <View className="flex items-center">
+                    //             <Text className="text-2xl font-pmedium mt-1">Enter Outlook Email</Text>
+                    //         </View>
+                    //         <View className="flex items-center">
+                    //             <FormField
+                    //                 placeholder=""
+                    //                 value={outlook}
+                    //                 onChangeText={setOutlook}
+                    //             />
+                    //         </View>
+                    //         <View className="w-full mt-6 h-8">
+                    //             <CustomButton 
+                    //             title="Continue"
+                    //             otherStyles="mt-6"
+                    //             handlePress={handleContinueOutlook}
+                    //             />
+                    //         </View>
+                    //     </View>
+                    //   ),
+                    //   title: (
+                    //     <View className="flex items-center">
+                            
+                    //     </View>
+                    //   ),
+                    //   subtitle: '',
+                    // },
                     {
                       backgroundColor: '#f5f3f0',
                       image: (
                         <View style={styles.lottie}>
-                            <LottieView style={{flex: 1}} source={require('../../assets/animations/mail.json')}  autoPlay loop={false}/>
+                            <LottieView style={{flex: 1}} source={require('../../assets/animations/slack.json')}  autoPlay loop={false}/>
                             <View className="flex items-center">
-                                <Text className="text-2xl font-pmedium mt-1">Enter Outlook Email</Text>
+                                <Text className="text-2xl font-pmedium">Enter Slack Credentials</Text>
                             </View>
                             <View className="flex items-center">
                                 <FormField
-                                    placeholder=""
-                                    value={outlook}
-                                    onChangeText={setOutlook}
+                                    placeholder="Slack ID"
+                                    value={slack.slackID}
+                                    onChangeText={(e) => setSlack({ ...slack, slackID: e })}
                                 />
                             </View>
-                            <View className="w-full mt-6 h-8">
+                            <View className="flex items-center">
+                                <FormField
+                                    placeholder="Slack Email"
+                                    value={slack.slackEmail}
+                                  onChangeText={(e) => setSlack({ ...slack, slackEmail: e })}
+                                />
+                            </View>
+                            <View className="w-full mt-6 h-1">
                                 <CustomButton 
                                 title="Continue"
                                 otherStyles="mt-6"
-                                handlePress={handleContinueOutlook}
+                                handlePress={handleSlackContinue}
                                 />
                             </View>
                         </View>
@@ -119,44 +160,6 @@ const OnboardingTabs = () => {
                                   title="Continue"
                                   otherStyles="mt-6"
                                   handlePress={handleAPIKeysContinue}
-                                  />
-                              </View>
-                          </View>
-                        ),
-                        title: (
-                          <View className="flex items-center">
-                              
-                          </View>
-                        ),
-                        subtitle: '',
-                      },
-                      {
-                        backgroundColor: '#f5f3f0',
-                        image: (
-                          <View style={styles.lottie}>
-                              <LottieView style={{flex: 1}} source={require('../../assets/animations/slack.json')}  autoPlay loop={false}/>
-                              <View className="flex items-center">
-                                  <Text className="text-2xl font-pmedium">Enter Slack Credentials</Text>
-                              </View>
-                              <View className="flex items-center">
-                                  <FormField
-                                      placeholder="Slack ID"
-                                      value={slack.slackID}
-                                      onChangeText={(e) => setSlack({ ...slack, slackID: e })}
-                                  />
-                              </View>
-                              <View className="flex items-center">
-                                  <FormField
-                                      placeholder="Slack Email"
-                                      value={slack.slackEmail}
-                                    onChangeText={(e) => setSlack({ ...slack, slackEmail: e })}
-                                  />
-                              </View>
-                              <View className="w-full mt-6 h-1">
-                                  <CustomButton 
-                                  title="Continue"
-                                  otherStyles="mt-6"
-                                  handlePress={handleSlackContinue}
                                   />
                               </View>
                           </View>
