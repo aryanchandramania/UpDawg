@@ -66,7 +66,7 @@ class DataEngine:
                 result[app] = []
             
             result[app].append(row)
-        
+        print(result.keys())
         return result
     
     
@@ -81,6 +81,8 @@ class DataEngine:
                 elif app_name == 'Outlook':
                     gapData = await self.apps[app_name].pullData(latest_entries[app_name])
                 self.pushData(gapData)
+                print(f"Data for {app_name} pulled and pushed to DB")
+        print("Data pulled and pushed to DB")
         return self.getDataFromDB(startDate)
     
     def getData(self,startDate):
