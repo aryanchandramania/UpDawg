@@ -29,7 +29,7 @@ class GPT3Summarizer:
 
         # return "Hello Aryan Chandramania"
 
-        chunks = DataSplitter().split_data_into_chunks(data, 2000)
+        chunks = DataSplitter().split_data_into_chunks(data, 100000)
         # print(len(chunks))
         messages=[
                 {"role": "system", "content": prompt},

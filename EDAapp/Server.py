@@ -7,11 +7,13 @@
 
 # Also support login, logout, and user onboarding functions on various endpoints
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify 
+import sys
+sys.path.append('../src')
 
-from src.Prompter.Prompter import Prompter
-from src.ResponseParser.ResponseParser import ResponseParser
-from src.UserManagement.UserManager import UserManager
+from Prompter.Prompter import Prompter
+from ResponseParsing.ResponseParsing import ResponseParser
+from UserManagement.UserManager import UserManager
 from PrompterD import kick_off
 
 from datetime import datetime, timezone
