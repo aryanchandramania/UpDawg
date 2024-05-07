@@ -38,10 +38,10 @@ const SignIn = () => {
       setUser(result);
       setIsLogged(true);
 
-      // loginData.username = form.email;
-      // loginData.password = form.password;
+      loginData.username = form.email;
+      loginData.password = form.password;
 
-      // await sendLoginData(loginData);
+      await sendLoginData(loginData);
 
       Alert.alert("Success", "User signed in successfully");
       router.replace("/home");

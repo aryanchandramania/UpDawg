@@ -8,10 +8,15 @@ import { images } from '../../constants';
 import Onboarding from 'react-native-onboarding-swiper';
 import FormField from '../../components/FormField';
 import CustomButton from "../../components/CustomButton";
+import { onboarding } from "../../lib/appwrite";
+
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const { width, height } = Dimensions.get("window");
 
 const OnboardingTabs = () => {
+
+  const { user, setUser, setIsLogged } = useGlobalContext();
 
   const onboardingRef = useRef(null);
 
@@ -23,16 +28,7 @@ const OnboardingTabs = () => {
     slackEmail: "",
   });
 
-  const handleContinueOutlook = () => {
-    if (outlook === "") {
-      Alert.alert("Error", "Please enter your email to continue");
-    }
-    else {
-        onboardingRef.current.goNext();
-    }
-  }
-
-  const handleAPIKeysContinue = () => {
+  const handleAPIKeysContinue = async () => {
     if (openAIAPI === "" && geminiAPI === "") {
       Alert.alert("Error", "Please enter atleast one API key to continue");
     }
@@ -40,6 +36,20 @@ const OnboardingTabs = () => {
       Alert.alert("Error", "Please enter both Slack ID and Email to continue");
     }
     else {
+
+      const onboardingData = {
+        username : user.username,
+        email: user.email,
+        password : user.password,
+        gemini_api_key: geminiAPI,
+        openai_api_key: openAIAPI,
+        slack_email : slack.slackEmail,
+        slack_id : slack.slackID
+      }
+
+      const response = await onboarding(onboardingData);
+      console.log(response);
+
       router.replace("/home");
     }
   }
