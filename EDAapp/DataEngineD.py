@@ -66,6 +66,7 @@ def start_data_engine():
         nonlocal chunks_received, startDate
         print(" [x] Received data chunk")
 
+        print(body)
         body = json.loads(body.decode('utf-8'))
         print(body)
 

@@ -71,11 +71,11 @@ def onboarding(data):
 
 # onboarding({'username': 'raghav', 'email': 'raghav.donakanti@students.iiit.ac.in','password':'hello123','gemini_api_key':'AIzaSyAnyGrLk1KZMbQ630X2b9WlgZxIHuSTd4Q','openai_api_key':'sk-proj-sNnochKA6hIWBNrw6JUAT3BlbkFJMPf1wRZgrKk5Ah1vfQhX','slack_email':'raghav.donakanti@students.iiit.ac.in','slack_id': 'hfjjgfjgfg'})
 
-onboarding({'username': "raghav", 'email': "raghav.donakanti@students.iiit.ac.in",'password': "hello123",'gemini_api_key': "AIzaSyAnyGrLk1KZMbQ630X2b9WlgZxIHuSTd4Q",'openai_api_key': "sk-proj-sNnochKA6hIWBNrw6JUAT3BlbkFJMPf1wRZgrKk5Ah1vfQhX",'slack_email': "raghav.donakanti@students.iiit.ac.in",'slack_id': "hfjjgfjgfg"})
+onboarding({'username': "raghav", 'email': "raghav.donakanti@students.iiit.ac.in",'password': "hello123",'gemini_api_key': "AIzaSyAnyGrLk1KZMbQ630X2b9WlgZxIHuSTd4Q",'openai_api_key': 'sk-proj-sNnochKA6hIWBNrw6JUAT3BlbkFJMPf1wRZgrKk5Ah1vfQhX','slack_email': "raghav.donakanti@students.iiit.ac.in",'slack_id': "hfjjgfjgfg"})
 
 login({'username': "raghav", 'password': "hello123"})
 
-sleep(60)
+sleep(10)
 print('start')
 
 processRequest()

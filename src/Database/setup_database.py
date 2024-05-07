@@ -3,8 +3,8 @@ import pymysql
 def create_database(username = None, password = None):
     connection = pymysql.connect(
         host="localhost",
-        user='root',
-        password="aryan"
+        user='raghavd',
+        password="password"
     )
 
     cursor = connection.cursor()

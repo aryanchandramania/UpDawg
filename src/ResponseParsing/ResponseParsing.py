@@ -59,6 +59,8 @@ class ResponseParser:
 
         return cleaned_response
 
+
+    # returns [{response: str, timestamp: str}]
     def get_user_summaries(self):
         user_id = self.get_current_user_id()
         if not user_id:

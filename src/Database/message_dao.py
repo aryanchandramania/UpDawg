@@ -10,8 +10,8 @@ class MessageDAO:
     def __init__(self, username=None, password=None):
         self.connection = pymysql.connect(
             host="localhost",
-            user='root',
-            password='aryan',
+            user='raghavd',
+            password='password',
             database="messaging"
         )
         self.cursor = self.connection.cursor()
@@ -99,12 +99,12 @@ class MessageDAO:
         # if endDate is None, return all messages after startDate
         try:
             if endDate is None:
-                query = '''SELECT App, MessageID, UserID, Sender, MessageContent, Date
+                query = '''SELECT MessageID, UserID, Sender, MessageContent, App, Date
                         FROM messages
                         WHERE Date >= %s'''
                 self.cursor.execute(query, (startDate,))
             else:
-                query = '''SELECT App, MessageID, UserID, Sender, MessageContent, Date
+                query = '''SELECT MessageID, UserID, Sender, MessageContent, App, Date
                         FROM messages
                         WHERE Date BETWEEN %s AND %s'''
                 self.cursor.execute(query, (startDate, endDate))
