@@ -26,7 +26,7 @@ def processRequest():
     response = prompter.prompt(startDate)
     # response_parser = ResponseParser()
     # response = response_parser.parse(response)
-    # print(response)
+    print(response)
     return response
 
 
